@@ -85,6 +85,8 @@ code, pre { font-family: var(--mono); font-size: 0.875rem; }
 .chip[aria-current="page"] { background: var(--ink); border-color: var(--ink); color: #fff; }
 .result-meta { margin: 20px 0 0; font-size: 0.95rem; color: var(--muted); }
 
+[hidden] { display: none !important; }
+
 /* Library rows */
 .rows { list-style: none; margin: 8px 0 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); }
 .row { display: grid; grid-template-columns: minmax(0, 1fr) 180px 128px auto; gap: 20px; align-items: center; padding: 18px 20px; border-top: 1px solid var(--line); }
@@ -103,6 +105,11 @@ code, pre { font-family: var(--mono); font-size: 0.875rem; }
   .row { grid-template-columns: minmax(0, 1fr) auto; }
   .row-platforms { display: none; }
   .row-action { grid-column: 1 / -1; justify-self: start; }
+}
+@media (max-width: 600px) {
+  .row { grid-template-columns: auto minmax(0, 1fr); gap: 12px 14px; padding: 16px; }
+  .row > div:first-child { grid-column: 1 / -1; }
+  .row-action { grid-column: auto; justify-self: end; }
 }
 
 /* Safety stamp: the one bold device on the site */
@@ -143,7 +150,8 @@ code, pre { font-family: var(--mono); font-size: 0.875rem; }
 /* Detail page */
 .crumbs { font-size: 0.9rem; margin: 28px 0 8px; color: var(--muted); }
 .crumbs a { color: var(--muted); }
-.detail { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; padding-bottom: 64px; }
+.detail { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 40px; padding-bottom: 64px; align-items: start; }
+.detail-form { grid-template-columns: minmax(0, 1fr) minmax(0, 460px); }
 .detail aside { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 20px; align-self: start; }
 .facts { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 0.92rem; }
 .facts dt { color: var(--muted); }
@@ -169,7 +177,7 @@ code, pre { font-family: var(--mono); font-size: 0.875rem; }
 @media (max-width: 760px) { .pack { grid-template-columns: 1fr; gap: 8px; } }
 
 /* Forms & dialog */
-.form { display: grid; gap: 14px; }
+.form { display: grid; gap: 14px; align-content: start; }
 .form label { display: grid; gap: 6px; font-weight: 500; font-size: 0.95rem; }
 .form input, .form textarea, .form select { font: inherit; padding: 11px 12px; border: 1px solid var(--line); border-radius: var(--radius-s); background: var(--surface); color: var(--ink); }
 .form input:focus, .form textarea:focus, .form select:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 3px rgba(240, 180, 41, 0.45); }
