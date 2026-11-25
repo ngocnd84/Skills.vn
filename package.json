@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "wrangler pages dev dist",
+    "preview": "npm run build && wrangler dev",
     "scan": "node scripts/scan-skills.mjs",
-    "db:local": "wrangler d1 execute skillsvn --local --file=schema.sql"
+    "db:local": "wrangler d1 execute skillsvn --local --file=schema.sql",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.6",

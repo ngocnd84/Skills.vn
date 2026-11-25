@@ -3,7 +3,7 @@
 Thư viện skill AI và workflow n8n cho người Việt: mô tả tiếng Việt, lệnh cài sẵn, quét an toàn hằng tuần. Có gói Pro bán bằng chuyển khoản (SePay tự xác nhận) và form đặt dịch vụ cài đặt.
 
 - **Giao diện:** Astro, xuất ra trang tĩnh (nhanh, SEO tốt, không cần server).
-- **Phần động:** Cloudflare Pages Functions trong thư mục `functions/` (tạo đơn, nhận webhook SePay, nhận form liên hệ).
+- **Phần động:** Cloudflare Worker (`worker/index.js` chuyển `/api/*` tới các hàm trong thư mục `functions/`) (tạo đơn, nhận webhook SePay, nhận form liên hệ).
 - **Dữ liệu đơn hàng:** Cloudflare D1 (SQLite), cấu trúc trong `schema.sql`.
 - **Báo đơn mới / tiền về:** Telegram bot.
 
@@ -18,23 +18,18 @@ Mỗi lần đẩy code lên nhánh `main`, Cloudflare tự build và cập nh�
 2. Cloudflare đưa 2 nameserver. Vào nơi mua tên miền (nhà đăng ký `.vn`), thay nameserver cũ bằng 2 nameserver này.
 3. Chờ Cloudflare báo **Active** (vài phút tới vài giờ).
 
-### 2. Tạo project Pages nối với GitHub
-1. Cloudflare → **Workers & Pages** → **Create** → tab **Pages** → **Connect to Git**.
-2. Chọn repo `ngocnd84/skills.vn`, nhánh `main`.
-3. Cấu hình build:
-   - Framework preset: **Astro**
-   - Build command: `npm run build`
-   - Build output directory: `dist`
-   - Biến môi trường: `NODE_VERSION` = `22`
-4. Bấm **Save and Deploy**. Xong bước này web đã chạy ở địa chỉ `*.pages.dev` (phần thư viện dùng được ngay; phần thanh toán cần bước 3–5).
+### 2. Tạo Worker nối với GitHub
+1. Cloudflare → **Workers & Pages** → **Create** → **Import a repository** → chọn `ngocnd84/Skills.vn`.
+2. Build command: `npm run build`. Deploy command: `npx wrangler deploy`. Root directory: `/`.
+3. Mọi cấu hình còn lại (thư mục trang tĩnh, đường dẫn `/api/*`, cơ sở dữ liệu) đã nằm trong `wrangler.jsonc`, không cần bấm thêm.
 
-### 3. Tạo cơ sở dữ liệu D1
-1. Cloudflare → **Storage & Databases** → **D1** → **Create** → tên `skillsvn`.
-2. Mở database vừa tạo → tab **Console** → dán toàn bộ nội dung file `schema.sql` → **Execute**.
-3. Quay lại project Pages → **Settings** → **Bindings** → **Add** → **D1 database**: Variable name `DB`, chọn `skillsvn`.
+Web chạy ở `skills-vn.ngocnd84.workers.dev` (bản xem trước, gắn `noindex`).
+
+### 3. Cơ sở dữ liệu D1
+Đã tạo sẵn D1 `skillsvn` (id `ecfd9441-65ec-42f5-b791-ca3c7e197924`), đã chạy `schema.sql`, đã gắn với tên `DB` trong `wrangler.jsonc`. Nếu cần tạo lại: `npx wrangler d1 create skillsvn`, sửa `database_id` trong `wrangler.jsonc`, rồi `npx wrangler d1 execute skillsvn --remote --file=schema.sql`.
 
 ### 4. Khai báo biến bí mật
-Project Pages → **Settings** → **Variables and Secrets** → thêm (chọn kiểu **Secret** cho các khoá):
+Worker `skills-vn` → **Settings** → **Variables and Secrets** → thêm (chọn kiểu **Secret** cho các khoá):
 
 | Biến | Ví dụ | Ghi chú |
 | --- | --- | --- |
@@ -57,7 +52,8 @@ Sau khi thêm biến hoặc binding, vào **Deployments** → **Retry deployment
 5. Bấm **Gửi thử** rồi chuyển thử 1 đơn thật giá nhỏ để kiểm tra từ đầu tới cuối.
 
 ### 6. Gắn tên miền
-Project Pages → **Custom domains** → thêm `skills.vn` và `www.skills.vn`. Cloudflare tự tạo bản ghi DNS và chứng chỉ HTTPS.
+1. Tên miền skills.vn → **DNS** → **Records**: xoá mọi bản ghi A/AAAA của `skills.vn`, `www` và `*` (bản ghi cũ trỏ vào IP của chính Cloudflare sẽ gây lỗi 1000 "DNS points to prohibited IP").
+2. Worker `skills-vn` → **Settings** → **Domains & Routes** → **Add** → **Custom domain**: thêm `skills.vn`, rồi thêm `www.skills.vn`. Cloudflare tự tạo bản ghi DNS và chứng chỉ HTTPS.
 
 ### 7. Cấu hình SEO (làm ngay sau khi web chạy trên skills.vn)
 
@@ -81,7 +77,7 @@ Project Pages → **Custom domains** → thêm `skills.vn` và `www.skills.vn`. 
 - Dữ liệu cấu trúc JSON-LD: Organization, BreadcrumbList, ItemList, SoftwareSourceCode, Product + Offer (giá VND), FAQPage, Service.
 - Sitemap có lastmod theo ngày quét, robots.txt, ảnh chia sẻ Facebook/Zalo 1200×630 (`public/og.png`).
 - `/llms.txt` tóm tắt toàn bộ site cho công cụ AI đọc.
-- Bản xem trước `*.pages.dev` gắn `noindex` để không trùng nội dung với skills.vn.
+- Bản xem trước `*.workers.dev` gắn `noindex` để không trùng nội dung với skills.vn.
 - Font tự host (không gọi Google Fonts), trang tĩnh, CSS gọn: tốc độ tải tốt cho Core Web Vitals.
 
 **Để lên top lâu dài:** mỗi tuần thêm 3–5 skill tiếng Việt vào thư viện và 1 bài hướng dẫn (ví dụ "Cách cài Claude Skill trên điện thoại", "10 workflow n8n cho shop online"). Nội dung mới đều đặn quan trọng hơn mọi thiết lập kỹ thuật.
@@ -110,7 +106,7 @@ npm install
 npm run dev                      # chỉ giao diện, http://localhost:4321
 # Thử cả phần thanh toán:
 cp .dev.vars.example .dev.vars   # điền giá trị
-npm run build && npx wrangler pages dev dist --d1 DB=skillsvn
+npm run preview   # = npm run build && wrangler dev, chạy cả trang tĩnh và /api
 ```
 
 ## Cấu trúc
