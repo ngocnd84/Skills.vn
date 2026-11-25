@@ -9,7 +9,7 @@ const orgLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'skills.vn',
-  legalName: site.company,
+  ...(site.company ? { legalName: site.company } : {}),
   url: 'https://skills.vn',
   logo: 'https://skills.vn/favicon.svg',
   ...(site.email ? { email: site.email } : {}),

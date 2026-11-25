@@ -6,7 +6,7 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="wrap">
     <div>
-      <p style="margin:0 0 4px"><strong style="color:var(--ink)">skills.vn</strong> — vận hành bởi {site.company}</p>
+      <p style="margin:0 0 4px"><strong style="color:var(--ink)">skills.vn</strong>{site.company && <> — vận hành bởi {site.company}</>}</p>
       {site.taxCode && <p style="margin:0">MST: {site.taxCode}</p>}
       {site.address && <p style="margin:0">{site.address}</p>}
       {(site.email || site.hotline || site.zalo) && (
