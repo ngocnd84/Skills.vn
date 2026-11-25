@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+import Library from '../components/Library.astro';
+import { counts, scanDate } from '../lib/library.js';
+const [y, m, d] = scanDate.split('-');
+---
+<Base title="Thư viện skill AI và workflow n8n" description={`${counts.total} skill AI và kho workflow n8n tuyển chọn, mô tả tiếng Việt, lệnh cài sẵn, quét an toàn ngày ${d}/${m}/${y}.`}>
+  <section class="hero wrap" style="padding-top:40px">
+    <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Thư viện</h1>
+    <p class="lead">{counts.total} skill, bộ skill và kho workflow n8n, quét an toàn lần gần nhất ngày {d}/{m}/{y}. Mục tiếng Việt xếp trước.</p>
+    <Library autofocus />
+  </section>
+  <section class="wrap" style="padding:24px 20px 64px">
+    <p class="muted measure">Bạn viết skill tiếng Việt và muốn được giới thiệu ở đây? Gửi link repo qua <a href="/dich-vu#lien-he">form liên hệ</a>. Chúng tôi chỉ nhận repo công khai, có giấy phép rõ ràng.</p>
+  </section>
+</Base>

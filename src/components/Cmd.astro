@@ -1,0 +1,9 @@
+---
+const { label, cmd, text } = Astro.props;
+---
+<div>
+  <p class="cmd-label">{label}</p>
+  {cmd
+    ? <div class="cmd"><pre><code>{cmd}</code></pre><button class="copy" data-copy={cmd}>Chép</button></div>
+    : <p>{text}</p>}
+</div>

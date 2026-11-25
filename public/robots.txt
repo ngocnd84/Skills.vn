@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /thanh-toan
+
+Sitemap: https://skills.vn/sitemap-index.xml

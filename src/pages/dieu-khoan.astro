@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+---
+<Base title="Điều khoản sử dụng và chính sách hoàn tiền">
+  <div class="wrap prose">
+    <div class="measure">
+      <h1 style="font-size:clamp(1.9rem,4vw,2.6rem)">Điều khoản sử dụng</h1>
+      <p class="muted">Áp dụng cho skills.vn, vận hành bởi {site.company}.</p>
+      <h2>Thư viện miễn phí</h2>
+      <p>Các skill và workflow trong thư viện thuộc quyền của tác giả gốc và được phát hành theo giấy phép ghi trên từng trang. skills.vn chỉ viết mô tả tiếng Việt, gắn nhãn quét an toàn và dẫn link về mã nguồn gốc; chúng tôi không bán lại nội dung này.</p>
+      <p>Nhãn an toàn là kết quả quét tự động theo mẫu trên file hướng dẫn tại thời điểm quét. Nhãn không bảo đảm skill không có lỗi hay không bị thay đổi sau đó. Bạn tự chịu trách nhiệm khi cài và chạy skill của bên thứ ba.</p>
+      <h2>Sản phẩm trả phí</h2>
+      <p>Bộ skill Pro do chúng tôi viết. Bạn được dùng cho bản thân hoặc trong công ty mình; không được bán lại hay chia sẻ công khai.</p>
+      <p>Gói Pro có thời hạn ghi trên trang giá và không tự gia hạn. Hết hạn, bạn giữ các bản đã tải nhưng không nhận bản cập nhật mới.</p>
+      <h2>Hoàn tiền</h2>
+      <p>Nếu skill không cài được trên công cụ đã ghi trong mô tả và chúng tôi không hỗ trợ khắc phục được trong 7 ngày kể từ ngày thanh toán, chúng tôi hoàn lại toàn bộ số tiền.</p>
+      <h2>Dữ liệu cá nhân</h2>
+      <p>Chúng tôi chỉ lưu họ tên, email, số điện thoại và thông tin đơn hàng để giao sản phẩm và hỗ trợ bạn, không bán hay chia sẻ cho bên thứ ba. Bạn có thể yêu cầu xoá dữ liệu bất cứ lúc nào{site.email ? <> qua <a href={`mailto:${site.email}`}>{site.email}</a></> : ''}.</p>
+    </div>
+  </div>
+</Base>

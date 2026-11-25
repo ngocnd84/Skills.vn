@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import products from '../data/products.json';
+---
+<Base title="Dịch vụ cài đặt skill AI và workflow n8n cho doanh nghiệp" description="Cài đặt, cấu hình skill AI và workflow n8n cho đội nhóm, viết skill riêng theo quy trình công ty, workshop thực hành.">
+  <section class="hero wrap">
+    <h1 style="max-width:18ch">Để chúng tôi cài cho đội của bạn</h1>
+    <p class="lead">Phần khó nhất không phải tìm skill, mà là cài đúng, nối đúng dữ liệu và để cả đội dùng được từ ngày đầu. Chúng tôi làm việc đó, rồi bàn giao kèm hướng dẫn.</p>
+  </section>
+  <section class="wrap section" style="padding-top:12px">
+    <div class="services">
+      {products.services.map((s) => (
+        <div class="service">
+          <h3>{s.name}</h3>
+          <p class="price">{s.price}</p>
+          <p class="muted">{s.summary}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+  <section class="wrap section" id="lien-he" style="padding-top:8px">
+    <div class="detail" style="grid-template-columns:minmax(0,1fr) minmax(0,460px)">
+      <div class="measure">
+        <h2>Cách làm việc</h2>
+        <ol>
+          <li>Gọi 30 phút để hiểu việc đội bạn đang làm tay mỗi ngày.</li>
+          <li>Gửi đề xuất: skill hoặc workflow nào, cài ở đâu, chi phí và thời gian.</li>
+          <li>Cài đặt, chạy thử với dữ liệu thật của bạn.</li>
+          <li>Hướng dẫn đội dùng, bàn giao tài liệu, hỗ trợ 30 ngày.</li>
+        </ol>
+        <p class="muted">Chúng tôi áp dụng chính các skill này cho các doanh nghiệp đang vận hành của mình trước khi đưa cho khách.</p>
+      </div>
+      <form class="form" id="lead-form" novalidate style="background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-m);padding:24px">
+        <h2 style="font-size:1.3rem;margin:0">Đặt lịch tư vấn</h2>
+        <label>Họ tên<input name="name" required autocomplete="name" maxlength="80" /></label>
+        <label>Số điện thoại hoặc Zalo<input name="phone" type="tel" required autocomplete="tel" maxlength="20" /></label>
+        <label>Email<input name="email" type="email" autocomplete="email" maxlength="120" /></label>
+        <label>Công ty<input name="company" autocomplete="organization" maxlength="120" /></label>
+        <label>Bạn cần gì
+          <select name="type">
+            {products.services.map((s) => <option value={s.id}>{s.name}</option>)}
+            <option value="gioi-thieu-skill">Giới thiệu skill của tôi lên thư viện</option>
+            <option value="khac">Việc khác</option>
+          </select>
+        </label>
+        <label>Mô tả ngắn<textarea name="need" rows="4" maxlength="1500" placeholder="Ví dụ: đội 6 người bán hàng qua Zalo, muốn AI soạn báo giá và nhắc khách"></textarea></label>
+        <p class="form-msg" id="lead-msg" role="status"></p>
+        <button class="btn btn-primary" type="submit">Gửi yêu cầu</button>
+      </form>
+    </div>
+  </section>
+  <script>
+    const form = document.getElementById('lead-form');
+    const msg = document.getElementById('lead-msg');
+    const params = new URLSearchParams(location.search);
+    if (params.get('can')) form.type.value = params.get('can');
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      if (!data.name.trim() || data.phone.replace(/\D/g, '').length < 9) {
+        msg.textContent = 'Cần họ tên và số điện thoại (ít nhất 9 chữ số) để chúng tôi gọi lại.';
+        msg.className = 'form-msg error';
+        return;
+      }
+      const btn = form.querySelector('button[type=submit]');
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/leads', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+        const out = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(out.error || 'Chưa gửi được. Thử lại sau ít phút.');
+        msg.textContent = 'Đã nhận yêu cầu. Chúng tôi sẽ gọi lại trong giờ làm việc.';
+        msg.className = 'form-msg ok';
+        form.reset();
+      } catch (err) {
+        msg.textContent = err.message;
+        msg.className = 'form-msg error';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+  </script>
+</Base>

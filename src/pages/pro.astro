@@ -1,0 +1,73 @@
+---
+import Base from '../layouts/Base.astro';
+import OrderDialog from '../components/OrderDialog.astro';
+import products from '../data/products.json';
+import platforms from '../data/platforms.json';
+import { vnd } from '../lib/library.js';
+const STATUS = { 'dang-ban': 'Đang bán', 'sap-ra': 'Sắp ra mắt' };
+---
+<Base title="Gói Pro: bộ skill viết cho nghiệp vụ Việt Nam" description="Bộ skill AI tự viết cho doanh nghiệp Việt: content bán hàng, Excel tiếng Việt, workflow Zalo, SePay. Mua lẻ từng bộ hoặc dùng gói Pro, cập nhật hằng tháng.">
+  <section class="hero wrap" style="padding-bottom:12px">
+    <h1 style="max-width:20ch">Bộ skill viết riêng cho cách người Việt làm việc</h1>
+    <p class="lead">Skill miễn phí trên mạng phần lớn viết cho thị trường Mỹ. Gói Pro là các bộ skill chúng tôi tự viết và tự dùng cho doanh nghiệp của mình: xưng hô, kênh bán, biểu mẫu và quy định của Việt Nam.</p>
+  </section>
+
+  <section class="wrap section" style="padding-top:24px">
+    <div class="section-head"><h2>Các bộ skill</h2><p class="muted">Mua lẻ dùng trọn đời, hoặc có tất cả trong gói Pro.</p></div>
+    <ul class="packs">
+      {products.packs.map((p) => (
+        <li class="pack">
+          <div>
+            <h3 style="margin-bottom:4px">{p.name}</h3>
+            <p class="muted" style="margin:0">{p.summary}</p>
+            <ul>{p.items.map((i) => <li>{i}</li>)}</ul>
+          </div>
+          <div>
+            <p class={`status ${p.status}`} style="margin:0">{STATUS[p.status]}</p>
+            <p style="margin:2px 0 0;font-size:0.88rem" class="muted">{p.platforms.map((x) => platforms[x]).join(', ')}</p>
+          </div>
+          <div>
+            <p style="margin:0 0 8px;font-weight:700;font-size:1.2rem">{vnd(p.price)}</p>
+            {p.status === 'dang-ban'
+              ? <button class="btn btn-primary" data-order={p.id} data-name={p.name} data-price={vnd(p.price)}>Mua bộ này</button>
+              : <button class="btn btn-ghost" data-order={p.id} data-name={p.name} data-mode="waitlist">Báo tôi khi ra mắt</button>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap section" style="padding-top:8px">
+    <div class="section-head"><h2>Gói Pro</h2><p class="muted">Có mọi bộ đang bán và mọi bộ ra mắt trong thời hạn gói.</p></div>
+    <div class="plans">
+      {products.plans.map((p) => (
+        <div class={`plan ${p.highlight ? 'highlight' : ''}`}>
+          {p.highlight && <span class="badge">Tiết kiệm nhất</span>}
+          <h3 style="margin:0">{p.name}</h3>
+          <p class="muted" style="margin:2px 0 0">{p.for}</p>
+          <p class="price">{vnd(p.price)}</p>
+          <p class="muted" style="margin:0">{p.period}</p>
+          <ul>{p.includes.map((i) => <li>{i}</li>)}</ul>
+          <button class={`btn ${p.highlight ? 'btn-ink' : 'btn-ghost'}`} data-order={p.id} data-name={p.name} data-price={vnd(p.price)}>Đăng ký {p.name}</button>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:8px">
+    <h2>Câu hỏi thường gặp</h2>
+    <div class="measure">
+      <h3>Tôi nhận skill bằng cách nào?</h3>
+      <p>Sau khi chuyển khoản, hệ thống tự xác nhận trong vài giây. Chúng tôi gửi file skill và hướng dẫn cài qua email trong giờ làm việc, thường trong 30 phút. Thành viên Pro được mời vào nhóm Zalo hỗ trợ.</p>
+      <h3>Dùng được trên AI nào?</h3>
+      <p>Skill viết theo chuẩn SKILL.md mở, dùng được trên app Claude, Claude Code, Codex và các agent đọc chuẩn này. Workflow n8n dùng cho n8n bản cloud hoặc tự host.</p>
+      <h3>Hết hạn gói Pro thì sao?</h3>
+      <p>Bạn giữ các bản skill đã tải. Chỉ dừng nhận bản cập nhật và bộ mới. Gói Pro không tự gia hạn, không trừ tiền tự động.</p>
+      <h3>Có hoàn tiền không?</h3>
+      <p>Nếu skill không cài được trên công cụ đã ghi trong mô tả và chúng tôi không hỗ trợ được trong 7 ngày, bạn được hoàn tiền. Chi tiết ở <a href="/dieu-khoan">điều khoản</a>.</p>
+      <h3>Công ty cần hoá đơn VAT?</h3>
+      <p>Gói Pro đội nhóm có hoá đơn VAT. Với gói khác, nhắn chúng tôi thông tin công ty sau khi thanh toán.</p>
+    </div>
+  </section>
+  <OrderDialog />
+</Base>

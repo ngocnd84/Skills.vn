@@ -1,0 +1,70 @@
+---
+// Một hộp thoại dùng chung: mua hàng (tạo đơn + chuyển sang trang thanh toán) hoặc đăng ký chờ ra mắt.
+---
+<dialog id="order-dialog" aria-labelledby="od-title">
+  <button class="dialog-close" type="button" aria-label="Đóng" data-close>×</button>
+  <h2 id="od-title" style="font-size:1.35rem"></h2>
+  <p id="od-sub" class="muted"></p>
+  <form class="form" id="od-form" novalidate>
+    <input type="hidden" name="productId" />
+    <input type="hidden" name="mode" />
+    <label>Họ tên<input name="name" required autocomplete="name" maxlength="80" /></label>
+    <label>Email nhận skill<input name="email" type="email" required autocomplete="email" maxlength="120" /></label>
+    <label>Số điện thoại hoặc Zalo<input name="phone" type="tel" required autocomplete="tel" maxlength="20" /></label>
+    <p class="form-msg" id="od-msg" role="status"></p>
+    <button class="btn btn-primary" type="submit" id="od-submit"></button>
+  </form>
+</dialog>
+<script>
+  const dlg = document.getElementById('order-dialog');
+  const form = document.getElementById('od-form');
+  const msg = document.getElementById('od-msg');
+  const submit = document.getElementById('od-submit');
+  dlg.querySelector('[data-close]').addEventListener('click', () => dlg.close());
+
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-order]');
+    if (!btn) return;
+    const mode = btn.dataset.mode || 'buy';
+    form.productId.value = btn.dataset.order;
+    form.mode.value = mode;
+    document.getElementById('od-title').textContent = mode === 'buy' ? `Mua ${btn.dataset.name}` : `Báo tôi khi ${btn.dataset.name} ra mắt`;
+    document.getElementById('od-sub').textContent = mode === 'buy'
+      ? `${btn.dataset.price}. Bước sau bạn quét mã QR để chuyển khoản, hệ thống tự xác nhận.`
+      : 'Chúng tôi gửi email khi bộ này mở bán, kèm giá ưu đãi cho người đăng ký sớm.';
+    submit.textContent = mode === 'buy' ? 'Tạo đơn và lấy mã QR' : 'Đăng ký nhận tin';
+    msg.textContent = '';
+    msg.className = 'form-msg';
+    dlg.showModal();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+    if (!data.name.trim() || !/^\S+@\S+\.\S+$/.test(data.email) || data.phone.replace(/\D/g, '').length < 9) {
+      msg.textContent = 'Kiểm tra lại họ tên, email và số điện thoại (ít nhất 9 chữ số).';
+      msg.className = 'form-msg error';
+      return;
+    }
+    submit.disabled = true;
+    try {
+      const url = data.mode === 'buy' ? '/api/orders' : '/api/leads';
+      const body = data.mode === 'buy' ? data : { ...data, type: 'cho-ra-mat', need: data.productId };
+      const res = await fetch(url, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out.error || 'Không tạo được yêu cầu. Thử lại sau ít phút.');
+      if (data.mode === 'buy') {
+        location.href = `/thanh-toan?ma=${encodeURIComponent(out.code)}`;
+      } else {
+        msg.textContent = 'Đã đăng ký. Chúng tôi sẽ email cho bạn khi mở bán.';
+        msg.className = 'form-msg ok';
+        form.reset();
+      }
+    } catch (err) {
+      msg.textContent = err.message;
+      msg.className = 'form-msg error';
+    } finally {
+      submit.disabled = false;
+    }
+  });
+</script>

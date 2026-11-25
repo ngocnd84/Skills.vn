@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import Cmd from '../components/Cmd.astro';
+import Stamp from '../components/Stamp.astro';
+import { SAFETY } from '../lib/library.js';
+---
+<Base title="Cách cài skill cho Claude, Codex, Cursor và workflow n8n" description="Hướng dẫn tiếng Việt cài skill cho app Claude, Claude Code, Codex, Cursor và import workflow n8n, kèm cách đọc nhãn an toàn.">
+  <div class="wrap prose">
+    <div class="measure">
+      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Cách cài skill</h1>
+      <p class="lead" style="font-size:1.15rem;color:var(--muted)">Skill là một thư mục có file SKILL.md chứa hướng dẫn cho AI. Cài một lần, AI tự dùng khi việc bạn nhờ khớp với mô tả của skill.</p>
+
+      <h2>App Claude (web, máy tính)</h2>
+      <ol>
+        <li>Tải thư mục skill về máy, nén thành file .zip (thư mục chứa SKILL.md nằm ở gốc file nén).</li>
+        <li>Trong Claude, mở Customize → Skills, bấm + rồi chọn Upload a skill.</li>
+        <li>Chọn file .zip. Cần gói Claude có hỗ trợ Skills và bật chạy mã.</li>
+      </ol>
+
+      <h2>Claude Code, Codex, Cursor và các agent khác</h2>
+      <p>Cách nhanh nhất là dùng skills CLI mã nguồn mở. Máy cần có Node.js.</p>
+      <Cmd label="Cài cả bộ skill trong một repo" cmd="npx skills add chu-repo/ten-repo" />
+      <Cmd label="Chỉ cài một skill" cmd="npx skills add anthropics/skills --skill docx" />
+      <Cmd label="Cài cho mọi agent, dùng chung trên máy" cmd="npx skills add chu-repo/ten-repo -g" />
+      <p>Với Claude Code, nhiều bộ skill còn có dạng plugin:</p>
+      <Cmd label="Claude Code" cmd={"/plugin marketplace add chu-repo/ten-repo\n/plugin install ten-plugin@ten-marketplace"} />
+      <p>Cài tay: chép thư mục skill vào <code>~/.claude/skills/</code> (Claude Code) hoặc <code>~/.codex/skills/</code> (Codex).</p>
+
+      <h2>Workflow n8n</h2>
+      <ol>
+        <li>Tải file .json của workflow.</li>
+        <li>Trong n8n, vào Workflows, bấm Import from File và chọn file.</li>
+        <li>Mở từng node có biểu tượng cảnh báo để nối tài khoản của bạn (Google, Zalo, OpenAI…), rồi bấm chạy thử.</li>
+      </ol>
+
+      <h2 id="an-toan">Đọc nhãn an toàn</h2>
+      <p>Mỗi tuần skills.vn đọc lại file hướng dẫn của từng mục và tìm các mẫu nguy hiểm thường gặp trong skill độc hại.</p>
+      <dl class="facts" style="gap:14px 16px;margin:16px 0">
+        {Object.keys(SAFETY).map((k) => (<><dt><Stamp status={k} /></dt><dd>{SAFETY[k].note}</dd></>))}
+      </dl>
+      <p>Nhãn là lớp lọc đầu tiên, không phải bảo đảm. Trước khi cài lên máy có dữ liệu công ty:</p>
+      <ul>
+        <li>Mở repo, đọc SKILL.md và mọi file trong thư mục scripts.</li>
+        <li>Cảnh giác với lệnh tải file từ mạng rồi chạy, lệnh đọc khoá SSH hay file .env.</li>
+        <li>Ưu tiên skill của nhà phát hành chính thức hoặc tác giả có lịch sử rõ ràng.</li>
+      </ul>
+    </div>
+  </div>
+</Base>

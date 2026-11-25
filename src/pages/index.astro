@@ -1,0 +1,53 @@
+---
+import Base from '../layouts/Base.astro';
+import Library from '../components/Library.astro';
+import Stamp from '../components/Stamp.astro';
+import { counts, SAFETY, vnd } from '../lib/library.js';
+import products from '../data/products.json';
+const cheapest = Math.min(...products.plans.map((p) => p.price));
+---
+<Base>
+  <section class="hero wrap">
+    <h1>Skill AI cho người Việt, quét an toàn trước khi bạn cài.</h1>
+    <p class="lead">Tìm skill cho Claude, Codex, Cursor và workflow n8n. Mỗi mục có mô tả tiếng Việt, lệnh cài để chép, và kết quả quét dấu hiệu độc hại.</p>
+    <Library featuredOnly autofocus={false} />
+  </section>
+
+  <section class="section wrap">
+    <div class="detail" style="padding-bottom:0">
+      <div class="measure">
+        <h2>Vì sao phải quét trước khi cài</h2>
+        <p>Skill là hướng dẫn mà AI làm theo trên máy bạn, kể cả chạy lệnh. Tháng 2/2026, Snyk quét 3.984 skill công khai: 13,4% có lỗi bảo mật nghiêm trọng và 76 skill chứa mã độc (<a href="https://research.snyk.io/blog/agent-skills-threat-landscape/" rel="noopener">báo cáo Snyk</a>).</p>
+        <p>skills.vn đọc file hướng dẫn của từng skill mỗi tuần, tìm các mẫu nguy hiểm như tải script rồi chạy thẳng, lấy khoá SSH, gửi dữ liệu ra ngoài, hay câu lệnh chèn để vượt hướng dẫn. Đây là lớp lọc đầu tiên, không thay cho việc bạn đọc mã trước khi cài vào máy công ty.</p>
+        <p><a href="/huong-dan#an-toan">Cách đọc nhãn an toàn</a></p>
+      </div>
+      <dl class="facts" style="align-self:start;gap:14px 16px">
+        {Object.keys(SAFETY).map((k) => (<><dt><Stamp status={k} /></dt><dd>{SAFETY[k].note}</dd></>))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap section">
+      <h2 style="color:#fff">Miễn phí để tìm, trả phí khi cần thứ viết riêng cho Việt Nam</h2>
+      <p class="muted measure">{counts.total} mục trong thư viện, {counts.vi} mục viết bằng tiếng Việt, {counts.n8n} kho workflow n8n. Danh sách được cập nhật hằng tuần.</p>
+      <div class="tiers">
+        <div class="tier">
+          <h3>Thư viện miễn phí</h3>
+          <p class="muted">Skill và workflow mã nguồn mở tuyển chọn, mô tả tiếng Việt, dẫn về repo gốc của tác giả.</p>
+          <p><a href="/thu-vien">Mở thư viện</a></p>
+        </div>
+        <div class="tier">
+          <h3>Gói Pro</h3>
+          <p class="muted">Bộ skill tự viết cho nghiệp vụ Việt Nam: content bán hàng, Excel tiếng Việt, workflow Zalo, SePay. Cập nhật hằng tháng. Từ {vnd(cheapest)}.</p>
+          <p><a href="/pro">Xem gói Pro</a></p>
+        </div>
+        <div class="tier">
+          <h3>Cài đặt cho doanh nghiệp</h3>
+          <p class="muted">Chúng tôi cài, cấu hình và hướng dẫn cho đội bạn, hoặc viết skill theo đúng quy trình của công ty.</p>
+          <p><a href="/dich-vu">Đặt lịch tư vấn</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

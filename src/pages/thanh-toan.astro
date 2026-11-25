@@ -1,0 +1,64 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Thanh toán đơn hàng" noindex>
+  <div class="wrap">
+    <div class="pay" id="pay" hidden>
+      <div><img id="pay-qr" alt="Mã QR chuyển khoản" width="300" height="300" /></div>
+      <div>
+        <h1 style="font-size:1.8rem">Quét mã để chuyển khoản</h1>
+        <p class="muted">Mở app ngân hàng, quét mã QR. Số tiền và nội dung đã điền sẵn, đừng sửa nội dung chuyển khoản.</p>
+        <dl class="facts" style="margin:18px 0">
+          <dt>Đơn hàng</dt><dd id="pay-product"></dd>
+          <dt>Số tiền</dt><dd><strong id="pay-amount"></strong></dd>
+          <dt>Nội dung</dt><dd><strong id="pay-code"></strong> <button class="btn btn-ghost" style="padding:3px 8px;font-size:0.8rem" id="copy-code">Chép</button></dd>
+          <dt>Ngân hàng</dt><dd id="pay-bank"></dd>
+          <dt>Số tài khoản</dt><dd id="pay-acc"></dd>
+          <dt>Chủ tài khoản</dt><dd id="pay-owner"></dd>
+        </dl>
+        <p class="pay-status" id="pay-status" role="status" aria-live="polite">Đang chờ chuyển khoản. Trang tự cập nhật khi nhận được tiền.</p>
+      </div>
+    </div>
+    <div class="prose measure" id="pay-error" hidden>
+      <h1 style="font-size:1.8rem">Không tìm thấy đơn hàng</h1>
+      <p>Mã đơn không đúng hoặc đã hết hạn. <a href="/pro">Quay lại trang Pro</a> để tạo đơn mới.</p>
+    </div>
+  </div>
+  <script>
+    const code = new URLSearchParams(location.search).get('ma');
+    const $ = (id) => document.getElementById(id);
+    const fmt = (n) => new Intl.NumberFormat('vi-VN').format(n) + 'đ';
+    let timer;
+    async function load(first) {
+      try {
+        const res = await fetch(`/api/orders/${encodeURIComponent(code || '')}`);
+        if (!res.ok) throw new Error();
+        const o = await res.json();
+        if (first) {
+          $('pay').hidden = false;
+          $('pay-qr').src = o.qrUrl;
+          $('pay-product').textContent = o.productName;
+          $('pay-amount').textContent = fmt(o.amount);
+          $('pay-code').textContent = o.code;
+          $('pay-bank').textContent = o.bank.name;
+          $('pay-acc').textContent = o.bank.account;
+          $('pay-owner').textContent = o.bank.owner;
+          $('copy-code').dataset.copy = o.code;
+        }
+        if (o.status === 'underpaid') {
+          $('pay-status').textContent = `Đã nhận ${fmt(o.paidAmount)}, còn thiếu ${fmt(o.amount - o.paidAmount)}. Chuyển thêm phần còn thiếu với cùng nội dung ${o.code}.`;
+        }
+        if (o.status === 'paid') {
+          clearInterval(timer);
+          $('pay-status').textContent = `Đã nhận ${fmt(o.paidAmount || o.amount)}. Cảm ơn bạn! Skill và hướng dẫn cài sẽ được gửi tới ${o.emailMasked} trong giờ làm việc, thường trong 30 phút.`;
+          $('pay-status').classList.add('paid');
+        }
+      } catch {
+        if (first) $('pay-error').hidden = false;
+        clearInterval(timer);
+      }
+    }
+    load(true);
+    timer = setInterval(() => load(false), 4000);
+  </script>
+</Base>

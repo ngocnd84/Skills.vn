@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import Stamp from '../../components/Stamp.astro';
+import Cmd from '../../components/Cmd.astro';
+import Row from '../../components/Row.astro';
+import { items, SAFETY, KIND, scanDate } from '../../lib/library.js';
+export function getStaticPaths() {
+  return items.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+const { item } = Astro.props;
+const related = items.filter((i) => i.category === item.category && i.slug !== item.slug).slice(0, 4);
+const s = SAFETY[item.safety.status];
+const [y, m, d] = scanDate.split('-');
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: item.name,
+  description: item.summary,
+  codeRepository: `https://github.com/${item.repo}`,
+  license: item.license,
+  author: { '@type': 'Organization', name: item.publisher },
+  inLanguage: item.lang === 'vi' ? 'vi' : 'en',
+};
+---
+<Base title={`${item.name}: ${KIND[item.kind].toLowerCase()} cho ${item.platformNames.slice(0, 2).join(', ')}`} description={item.summary}>
+  <div class="wrap">
+    <p class="crumbs"><a href="/thu-vien">Thư viện</a> / <a href={`/thu-vien?nhom=${item.category}`}>{item.categoryName}</a></p>
+    <div class="detail">
+      <article>
+        <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">{item.name}</h1>
+        <p class="lead" style="font-size:1.15rem">{item.summary}</p>
+        <p class="measure">{item.description}</p>
+
+        <h2 style="margin-top:32px">Cài đặt</h2>
+        {item.installs.map((i) => <Cmd {...i} />)}
+        <p class="muted measure" style="font-size:0.92rem">Lệnh <code>npx skills</code> dùng <a href="https://github.com/vercel-labs/skills" rel="noopener">skills CLI</a> mã nguồn mở của Vercel, cài vào Claude Code, Codex, Cursor và nhiều agent khác. Lần đầu chạy cần cài Node.js. <a href="/huong-dan">Hướng dẫn chi tiết</a></p>
+
+        <h2 id="an-toan" style="margin-top:32px">Kết quả quét an toàn</h2>
+        <p><Stamp status={item.safety.status} /></p>
+        <p class="measure">{s.note}{item.safety.files ? ` (đã đọc ${item.safety.files} file hướng dẫn ngày ${d}/${m}/${y}).` : '.'}</p>
+        {item.safety.findings.length > 0 && (
+          <ul class="findings">{item.safety.findings.map((f) => <li>{f.msg} <span class="muted">— {f.file}</span></li>)}</ul>
+        )}
+        <p class="muted measure" style="font-size:0.92rem;margin-top:12px">Quét sơ bộ chỉ đọc file hướng dẫn, chưa đọc script đi kèm. Trước khi cài vào máy có dữ liệu công ty, hãy mở repo và đọc qua các file trong thư mục scripts.</p>
+      </article>
+      <aside>
+        <dl class="facts">
+          <dt>Loại</dt><dd>{KIND[item.kind]}</dd>
+          <dt>Tác giả</dt><dd>{item.publisher}{item.official && ' (chính thức)'}</dd>
+          <dt>Ngôn ngữ</dt><dd>{item.lang === 'vi' ? 'Tiếng Việt' : 'Tiếng Anh'}</dd>
+          <dt>Dùng với</dt><dd>{item.platformNames.join(', ')}</dd>
+          <dt>Giấy phép</dt><dd>{item.license}</dd>
+          <dt>Mã nguồn</dt><dd><a href={item.url} rel="noopener">{item.repo}</a></dd>
+        </dl>
+        <p style="margin:18px 0 0"><a class="btn btn-ghost" href={item.url} rel="noopener" style="width:100%">Mở trên GitHub</a></p>
+      </aside>
+    </div>
+    {related.length > 0 && (
+      <section style="padding-bottom:64px">
+        <h2>Cùng nhóm {item.categoryName.toLowerCase()}</h2>
+        <ul class="rows">{related.map((r) => <Row item={r} />)}</ul>
+      </section>
+    )}
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</Base>

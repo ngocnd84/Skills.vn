@@ -1,0 +1,9 @@
+# Chép thành .dev.vars để chạy thử trên máy. KHÔNG commit file .dev.vars.
+SEPAY_API_KEY=
+SEPAY_WEBHOOK_SECRET=
+BANK_CODE=MBBank
+BANK_NAME=MB Bank
+BANK_ACCOUNT=
+BANK_OWNER=
+TELEGRAM_BOT_TOKEN=
+TELEGRAM_CHAT_ID=

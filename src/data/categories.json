@@ -1,0 +1,10 @@
+[
+  { "id": "van-phong", "name": "Văn phòng & tài liệu" },
+  { "id": "marketing", "name": "Marketing & bán hàng" },
+  { "id": "noi-dung", "name": "Viết nội dung" },
+  { "id": "thiet-ke", "name": "Thiết kế" },
+  { "id": "lap-trinh", "name": "Lập trình" },
+  { "id": "nghien-cuu", "name": "Nghiên cứu & dữ liệu web" },
+  { "id": "agent", "name": "Xây agent & skill" },
+  { "id": "tu-dong-hoa", "name": "Workflow n8n" }
+]

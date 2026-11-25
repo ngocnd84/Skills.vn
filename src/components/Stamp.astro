@@ -1,0 +1,10 @@
+---
+import { SAFETY, scanDate } from '../lib/library.js';
+const { status = 'chua-quet' } = Astro.props;
+const s = SAFETY[status] ?? SAFETY['chua-quet'];
+const [y, m, d] = (scanDate || '').split('-');
+---
+<span class={`stamp stamp-${status}`} title={s.note}>
+  <b>{s.label}</b>
+  <small>{status === 'chua-quet' ? 'chờ quét' : `quét ${d}/${m}/${y}`}</small>
+</span>

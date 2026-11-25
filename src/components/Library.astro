@@ -1,0 +1,60 @@
+---
+import Row from './Row.astro';
+import { items, categories } from '../lib/library.js';
+const { featuredOnly = false, autofocus = false } = Astro.props;
+const sorted = [...items].sort((a, b) => (b.lang === 'vi') - (a.lang === 'vi') || (b.featured - a.featured) || a.name.localeCompare(b.name, 'vi'));
+---
+<div class="library" data-featured-only={featuredOnly ? '1' : '0'}>
+  <form class="search" role="search" onsubmit="return false">
+    <label class="sr-only" for="q">Tìm skill</label>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Tìm: viết content, Excel, Zalo, SEO, n8n…" autocomplete="off" autofocus={autofocus} />
+  </form>
+  <ul class="chips" aria-label="Lọc theo nhóm">
+    <li><button class="chip" type="button" data-cat="" aria-pressed="true">Tất cả</button></li>
+    <li><button class="chip" type="button" data-cat="__vi" aria-pressed="false">Viết bằng tiếng Việt</button></li>
+    {categories.map((c) => <li><button class="chip" type="button" data-cat={c.id} aria-pressed="false">{c.name}</button></li>)}
+  </ul>
+  <p class="result-meta" aria-live="polite"></p>
+  <ul class="rows">
+    {sorted.map((item) => <Row item={item} />)}
+    <li class="empty" hidden>Không có skill nào khớp. Thử từ khác, hoặc <a href="/dich-vu">nhờ chúng tôi viết skill riêng</a>.</li>
+  </ul>
+</div>
+<script>
+  for (const root of document.querySelectorAll('.library')) {
+    const featuredOnly = root.dataset.featuredOnly === '1';
+    const input = root.querySelector('#q');
+    const chips = [...root.querySelectorAll('.chip')];
+    const rows = [...root.querySelectorAll('.row')];
+    const meta = root.querySelector('.result-meta');
+    const empty = root.querySelector('.empty');
+    const params = new URLSearchParams(location.search);
+    let cat = params.get('nhom') || (params.get('loai') === 'n8n' ? 'tu-dong-hoa' : '');
+    if (params.get('q')) input.value = params.get('q');
+    const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').toLowerCase();
+    rows.forEach((r) => (r.dataset.norm = norm(r.dataset.search)));
+
+    function apply() {
+      const q = norm(input.value.trim());
+      const browsing = featuredOnly && !q && !cat;
+      let shown = 0;
+      for (const r of rows) {
+        const matchCat = !cat || (cat === '__vi' ? r.dataset.lang === 'vi' : r.dataset.cat === cat);
+        const matchQ = !q || q.split(/\s+/).every((w) => r.dataset.norm.includes(w));
+        const matchFeatured = !browsing || r.dataset.featured === '1';
+        const show = matchCat && matchQ && matchFeatured;
+        r.hidden = !show;
+        if (show) shown++;
+      }
+      empty.hidden = shown > 0;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.cat === cat)));
+      meta.innerHTML = browsing
+        ? `Đang hiện ${shown} mục nổi bật trong ${rows.length} mục. <a href="/thu-vien">Xem cả thư viện</a>`
+        : `${shown} kết quả`;
+    }
+    input.addEventListener('input', apply);
+    chips.forEach((c) => c.addEventListener('click', () => { cat = c.dataset.cat; apply(); }));
+    apply();
+  }
+</script>

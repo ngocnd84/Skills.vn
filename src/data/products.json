@@ -1,0 +1,90 @@
+{
+  "plans": [
+    {
+      "id": "pro-1-thang",
+      "name": "Pro 1 tháng",
+      "price": 199000,
+      "period": "1 tháng",
+      "for": "Dùng thử toàn bộ kho Pro",
+      "includes": ["Mọi bộ skill Pro đang có", "Bộ mới ra trong tháng", "Nhóm hỗ trợ trên Zalo"],
+      "buy": true
+    },
+    {
+      "id": "pro-12-thang",
+      "name": "Pro 12 tháng",
+      "price": 1490000,
+      "period": "12 tháng",
+      "for": "Cá nhân dùng AI hằng ngày",
+      "includes": ["Mọi bộ skill Pro đang có", "Mọi bộ mới ra trong 12 tháng", "Cập nhật hằng tháng", "Nhóm hỗ trợ trên Zalo"],
+      "buy": true,
+      "highlight": true
+    },
+    {
+      "id": "pro-doi-nhom",
+      "name": "Pro đội nhóm",
+      "price": 4900000,
+      "period": "12 tháng, 5 người",
+      "for": "Phòng marketing, văn phòng, đội dev",
+      "includes": ["Toàn bộ quyền lợi Pro 12 tháng cho 5 người", "Hoá đơn VAT", "1 buổi hướng dẫn cài online"],
+      "buy": true
+    }
+  ],
+  "packs": [
+    {
+      "id": "bo-content-marketing",
+      "name": "Content & Marketing tiếng Việt",
+      "price": 299000,
+      "status": "dang-ban",
+      "summary": "Biến AI thành người viết content bán hàng: 14 công thức (AIDA, PAS, FAB, 4Cs…), 18 hiệu ứng tâm lý, 10 kỹ thuật NLP, tự chọn công thức theo sản phẩm và kênh.",
+      "items": ["14 công thức content", "18 hiệu ứng tâm lý", "10 kỹ thuật NLP copywriting", "Mẫu cho Facebook, TikTok, Zalo, landing page"],
+      "platforms": ["claude-app", "claude-code", "codex"]
+    },
+    {
+      "id": "bo-van-phong-du-lieu",
+      "name": "Văn phòng & Dữ liệu Việt",
+      "price": 299000,
+      "status": "sap-ra",
+      "summary": "Excel/CSV có dữ liệu tiếng Việt, chuẩn hoá địa chỉ cũ và mới sau sáp nhập đơn vị hành chính, báo cáo nội bộ đúng định dạng Việt Nam.",
+      "items": ["Xử lý Excel tiếng Việt", "Đối chiếu địa chỉ cũ – mới", "Mẫu báo cáo nội bộ"],
+      "platforms": ["claude-app", "claude-code"]
+    },
+    {
+      "id": "bo-founder-san-pham",
+      "name": "Founder & Sản phẩm",
+      "price": 399000,
+      "status": "sap-ra",
+      "summary": "Cho chủ doanh nghiệp làm sản phẩm số: nghiên cứu sản phẩm mẫu trước khi build, quy trình 6 cổng duyệt ý tưởng, viết PRD, ra quyết định khi phân vân.",
+      "items": ["Buy-before-build", "Quy trình 6 cổng sản phẩm", "Viết PRD và giao việc dev", "Ra quyết định có chính kiến"],
+      "platforms": ["claude-app", "claude-code"]
+    },
+    {
+      "id": "bo-n8n-viet",
+      "name": "Workflow n8n cho doanh nghiệp Việt",
+      "price": 499000,
+      "status": "sap-ra",
+      "summary": "Workflow nối các dịch vụ người Việt dùng hằng ngày: Zalo OA, SePay, Google Sheets, GHN, Shopee. Mỗi workflow kèm video cài đặt.",
+      "items": ["Zalo OA tự trả lời", "Đối soát chuyển khoản SePay", "Đồng bộ đơn Shopee về Sheets", "Tạo vận đơn GHN"],
+      "platforms": ["n8n"]
+    }
+  ],
+  "services": [
+    {
+      "id": "cai-dat",
+      "name": "Cài đặt cho doanh nghiệp",
+      "price": "Từ 3.000.000đ",
+      "summary": "Cài skill và workflow phù hợp lên máy và tài khoản của đội bạn, cấu hình sẵn, hướng dẫn 1 buổi."
+    },
+    {
+      "id": "viet-rieng",
+      "name": "Viết skill, workflow riêng",
+      "price": "Từ 10.000.000đ",
+      "summary": "Đóng gói quy trình của công ty bạn (báo giá, chăm sóc khách, báo cáo, kế toán) thành skill hoặc workflow chạy được."
+    },
+    {
+      "id": "workshop",
+      "name": "Workshop cho đội nhóm",
+      "price": "Báo giá theo số người",
+      "summary": "Buổi thực hành dùng Claude, skill và n8n cho đúng công việc của phòng ban bạn."
+    }
+  ]
+}

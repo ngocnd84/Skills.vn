@@ -1,0 +1,28 @@
+---
+import site from '../data/site.json';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div>
+      <p style="margin:0 0 4px"><strong style="color:var(--ink)">skills.vn</strong> — vận hành bởi {site.company}</p>
+      {site.taxCode && <p style="margin:0">MST: {site.taxCode}</p>}
+      {site.address && <p style="margin:0">{site.address}</p>}
+      {(site.email || site.hotline || site.zalo) && (
+        <p style="margin:0">
+          {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
+          {site.hotline && <> &nbsp; Hotline {site.hotline}</>}
+          {site.zalo && <> &nbsp; <a href={`https://zalo.me/${site.zalo}`}>Zalo</a></>}
+        </p>
+      )}
+      <p style="margin:8px 0 0">© {year}. Skill miễn phí thuộc về tác giả gốc, chúng tôi chỉ mô tả và dẫn link.</p>
+    </div>
+    <nav aria-label="Chân trang">
+      <a href="/thu-vien">Thư viện</a>
+      <a href="/pro">Gói Pro</a>
+      <a href="/dich-vu">Dịch vụ</a>
+      <a href="/huong-dan">Cách cài</a>
+      <a href="/dieu-khoan">Điều khoản</a>
+    </nav>
+  </div>
+</footer>
