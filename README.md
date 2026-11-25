@@ -59,6 +59,33 @@ Sau khi thêm biến hoặc binding, vào **Deployments** → **Retry deployment
 ### 6. Gắn tên miền
 Project Pages → **Custom domains** → thêm `skills.vn` và `www.skills.vn`. Cloudflare tự tạo bản ghi DNS và chứng chỉ HTTPS.
 
+### 7. Cấu hình SEO (làm ngay sau khi web chạy trên skills.vn)
+
+**Trên Cloudflare (tên miền skills.vn):**
+1. **Rules → Redirect Rules** → chọn mẫu *Redirect from WWW to root* → lưu. Để Google chỉ thấy một địa chỉ `https://skills.vn`.
+2. **SSL/TLS → Edge Certificates**: bật *Always Use HTTPS*.
+3. **Caching → Configuration**: bật *Crawler Hints*. Cloudflare tự báo Bing/Yandex (IndexNow) mỗi khi trang thay đổi.
+4. **Speed → Optimization**: bật *Early Hints* và *HTTP/3*. KHÔNG bật *Rocket Loader* (làm hỏng nút chép lệnh và ô tìm kiếm).
+5. **Security → Bots**: tắt *Block AI bots*, để ChatGPT, Claude, Perplexity đọc được web và trích dẫn skills.vn khi người dùng hỏi về Claude Skill. *Bot Fight Mode* để bật cũng được (không chặn Googlebot).
+
+**Google Search Console** (search.google.com/search-console):
+1. Thêm thuộc tính kiểu **Domain**, nhập `skills.vn`. Chọn xác minh bằng Cloudflare (tự thêm bản ghi DNS TXT) hoặc chép bản ghi TXT vào Cloudflare DNS.
+2. **Sitemaps** → gửi `sitemap-index.xml`.
+3. **URL Inspection** → kiểm tra `https://skills.vn/` → *Request indexing*. Làm tương tự cho `/thu-vien`, `/huong-dan`, `/pro`.
+
+**Bing Webmaster Tools** (bing.com/webmasters): chọn *Import from Google Search Console* là xong (ChatGPT tìm kiếm dựa nhiều vào chỉ mục của Bing).
+
+**Đã làm sẵn trong code:**
+- Mỗi trang có tiêu đề, mô tả, canonical riêng; tiêu đề chọn theo từ khoá có lượt tìm thật tại Việt Nam (11/2026): "claude skill" ~3.600/tháng, "agent skills" ~2.900, "n8n workflow" ~1.000, "claude code skill" ~880, "skill claude" ~720 và đang tăng.
+- 9 trang nhóm tĩnh (`/thu-vien/tieng-viet`, `/thu-vien/tu-dong-hoa`…) để lên top các cụm "skill tiếng Việt", "workflow n8n mẫu".
+- Dữ liệu cấu trúc JSON-LD: Organization, BreadcrumbList, ItemList, SoftwareSourceCode, Product + Offer (giá VND), FAQPage, Service.
+- Sitemap có lastmod theo ngày quét, robots.txt, ảnh chia sẻ Facebook/Zalo 1200×630 (`public/og.png`).
+- `/llms.txt` tóm tắt toàn bộ site cho công cụ AI đọc.
+- Bản xem trước `*.pages.dev` gắn `noindex` để không trùng nội dung với skills.vn.
+- Font tự host (không gọi Google Fonts), trang tĩnh, CSS gọn: tốc độ tải tốt cho Core Web Vitals.
+
+**Để lên top lâu dài:** mỗi tuần thêm 3–5 skill tiếng Việt vào thư viện và 1 bài hướng dẫn (ví dụ "Cách cài Claude Skill trên điện thoại", "10 workflow n8n cho shop online"). Nội dung mới đều đặn quan trọng hơn mọi thiết lập kỹ thuật.
+
 ---
 
 ## Việc hằng ngày

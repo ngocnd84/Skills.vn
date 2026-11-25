@@ -4,9 +4,23 @@ import OrderDialog from '../components/OrderDialog.astro';
 import products from '../data/products.json';
 import platforms from '../data/platforms.json';
 import { vnd } from '../lib/library.js';
+import { breadcrumb } from '../lib/library.js';
 const STATUS = { 'dang-ban': 'Đang bán', 'sap-ra': 'Sắp ra mắt' };
+const faq = [
+  ['Tôi nhận skill bằng cách nào?', 'Sau khi chuyển khoản, hệ thống tự xác nhận trong vài giây. Chúng tôi gửi file skill và hướng dẫn cài qua email trong giờ làm việc, thường trong 30 phút. Thành viên Pro được mời vào nhóm Zalo hỗ trợ.'],
+  ['Dùng được trên AI nào?', 'Skill viết theo chuẩn SKILL.md mở, dùng được trên app Claude, Claude Code, Codex và các agent đọc chuẩn này. Workflow n8n dùng cho n8n bản cloud hoặc tự host.'],
+  ['Hết hạn gói Pro thì sao?', 'Bạn giữ các bản skill đã tải. Chỉ dừng nhận bản cập nhật và bộ mới. Gói Pro không tự gia hạn, không trừ tiền tự động.'],
+  ['Có hoàn tiền không?', 'Nếu skill không cài được trên công cụ đã ghi trong mô tả và chúng tôi không hỗ trợ được trong 7 ngày, bạn được hoàn tiền.'],
+  ['Công ty cần hoá đơn VAT?', 'Gói Pro đội nhóm có hoá đơn VAT. Với gói khác, nhắn chúng tôi thông tin công ty sau khi thanh toán.'],
+];
+const offer = (price) => ({ '@type': 'Offer', price, priceCurrency: 'VND', availability: 'https://schema.org/InStock', url: 'https://skills.vn/pro', seller: { '@type': 'Organization', name: 'skills.vn' } });
+const productLd = [
+  ...products.packs.filter((p) => p.status === 'dang-ban').map((p) => ({ '@context': 'https://schema.org', '@type': 'Product', name: `Bộ skill ${p.name}`, description: p.summary, brand: { '@type': 'Brand', name: 'skills.vn' }, offers: offer(p.price) })),
+  ...products.plans.map((p) => ({ '@context': 'https://schema.org', '@type': 'Product', name: `skills.vn ${p.name}`, description: `${p.for}. ${p.includes.join(', ')}.`, brand: { '@type': 'Brand', name: 'skills.vn' }, offers: offer(p.price) })),
+];
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
 ---
-<Base title="Gói Pro: bộ skill viết cho nghiệp vụ Việt Nam" description="Bộ skill AI tự viết cho doanh nghiệp Việt: content bán hàng, Excel tiếng Việt, workflow Zalo, SePay. Mua lẻ từng bộ hoặc dùng gói Pro, cập nhật hằng tháng.">
+<Base jsonLd={[...productLd, faqLd, breadcrumb([['Trang chủ', '/'], ['Gói Pro', '/pro']])]} title="Gói Pro: Claude Skill tiếng Việt cho nghiệp vụ" description="Bộ skill AI tự viết cho doanh nghiệp Việt: content bán hàng, Excel tiếng Việt, workflow Zalo, SePay. Mua lẻ từng bộ hoặc dùng gói Pro, cập nhật hằng tháng.">
   <section class="hero wrap" style="padding-bottom:12px">
     <h1 style="max-width:20ch">Bộ skill viết riêng cho cách người Việt làm việc</h1>
     <p class="lead">Skill miễn phí trên mạng phần lớn viết cho thị trường Mỹ. Gói Pro là các bộ skill chúng tôi tự viết và tự dùng cho doanh nghiệp của mình: xưng hô, kênh bán, biểu mẫu và quy định của Việt Nam.</p>
@@ -57,16 +71,7 @@ const STATUS = { 'dang-ban': 'Đang bán', 'sap-ra': 'Sắp ra mắt' };
   <section class="wrap section" style="padding-top:8px">
     <h2>Câu hỏi thường gặp</h2>
     <div class="measure">
-      <h3>Tôi nhận skill bằng cách nào?</h3>
-      <p>Sau khi chuyển khoản, hệ thống tự xác nhận trong vài giây. Chúng tôi gửi file skill và hướng dẫn cài qua email trong giờ làm việc, thường trong 30 phút. Thành viên Pro được mời vào nhóm Zalo hỗ trợ.</p>
-      <h3>Dùng được trên AI nào?</h3>
-      <p>Skill viết theo chuẩn SKILL.md mở, dùng được trên app Claude, Claude Code, Codex và các agent đọc chuẩn này. Workflow n8n dùng cho n8n bản cloud hoặc tự host.</p>
-      <h3>Hết hạn gói Pro thì sao?</h3>
-      <p>Bạn giữ các bản skill đã tải. Chỉ dừng nhận bản cập nhật và bộ mới. Gói Pro không tự gia hạn, không trừ tiền tự động.</p>
-      <h3>Có hoàn tiền không?</h3>
-      <p>Nếu skill không cài được trên công cụ đã ghi trong mô tả và chúng tôi không hỗ trợ được trong 7 ngày, bạn được hoàn tiền. Chi tiết ở <a href="/dieu-khoan">điều khoản</a>.</p>
-      <h3>Công ty cần hoá đơn VAT?</h3>
-      <p>Gói Pro đội nhóm có hoá đơn VAT. Với gói khác, nhắn chúng tôi thông tin công ty sau khi thanh toán.</p>
+      {faq.map(([q, a]) => (<><h3>{q}</h3><p>{a}{q === 'Có hoàn tiền không?' && <> Chi tiết ở <a href="/dieu-khoan">điều khoản</a>.</>}</p></>))}
     </div>
   </section>
   <OrderDialog />

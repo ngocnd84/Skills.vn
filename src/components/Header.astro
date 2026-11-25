@@ -1,8 +1,8 @@
 ---
-const path = Astro.url.pathname;
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
 const links = [
   { href: '/thu-vien', label: 'Thư viện' },
-  { href: '/thu-vien?loai=n8n', label: 'Workflow n8n' },
+  { href: '/thu-vien/tu-dong-hoa', label: 'Workflow n8n' },
   { href: '/huong-dan', label: 'Cách cài' },
   { href: '/dich-vu', label: 'Dịch vụ' },
 ];

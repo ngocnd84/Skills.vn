@@ -4,12 +4,24 @@ import Library from '../components/Library.astro';
 import Stamp from '../components/Stamp.astro';
 import { counts, SAFETY, vnd } from '../lib/library.js';
 import products from '../data/products.json';
+import site from '../data/site.json';
+const orgLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'skills.vn',
+  legalName: site.company,
+  url: 'https://skills.vn',
+  logo: 'https://skills.vn/favicon.svg',
+  ...(site.email ? { email: site.email } : {}),
+  ...(site.hotline ? { telephone: site.hotline } : {}),
+};
+const webLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'skills.vn', url: 'https://skills.vn', inLanguage: 'vi' };
 const cheapest = Math.min(...products.plans.map((p) => p.price));
 ---
-<Base>
+<Base jsonLd={[orgLd, webLd]}>
   <section class="hero wrap">
-    <h1>Skill AI cho người Việt, quét an toàn trước khi bạn cài.</h1>
-    <p class="lead">Tìm skill cho Claude, Codex, Cursor và workflow n8n. Mỗi mục có mô tả tiếng Việt, lệnh cài để chép, và kết quả quét dấu hiệu độc hại.</p>
+    <h1>Claude Skill tiếng Việt, quét an toàn trước khi bạn cài.</h1>
+    <p class="lead">Thư viện agent skill cho Claude, Codex, Cursor và workflow n8n mẫu. Mỗi mục có mô tả tiếng Việt, lệnh cài để chép, và kết quả quét dấu hiệu độc hại.</p>
     <Library featuredOnly autofocus={false} />
   </section>
 

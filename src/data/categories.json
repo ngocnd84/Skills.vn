@@ -1,10 +1,65 @@
 [
-  { "id": "van-phong", "name": "Văn phòng & tài liệu" },
-  { "id": "marketing", "name": "Marketing & bán hàng" },
-  { "id": "noi-dung", "name": "Viết nội dung" },
-  { "id": "thiet-ke", "name": "Thiết kế" },
-  { "id": "lap-trinh", "name": "Lập trình" },
-  { "id": "nghien-cuu", "name": "Nghiên cứu & dữ liệu web" },
-  { "id": "agent", "name": "Xây agent & skill" },
-  { "id": "tu-dong-hoa", "name": "Workflow n8n" }
+  {
+    "id": "tieng-viet",
+    "name": "Viết bằng tiếng Việt",
+    "title": "Bộ Claude Skill tiếng Việt miễn phí",
+    "h1": "Skill tiếng Việt cho Claude và các AI agent",
+    "intro": "Các bộ skill do người Việt viết hoặc Việt hoá: marketing bán hàng qua Zalo, sàn TMĐT, SEO tiếng Việt, văn bản kinh doanh đúng xưng hô. Cài được trên Claude, Claude Code, Codex và các agent đọc chuẩn SKILL.md."
+  },
+  {
+    "id": "van-phong",
+    "name": "Văn phòng & tài liệu",
+    "title": "Skill Claude cho Word, Excel, PowerPoint, PDF",
+    "h1": "Skill văn phòng: Word, Excel, PowerPoint, PDF",
+    "intro": "Skill giúp AI làm việc với file văn phòng thật: soạn hợp đồng Word, dựng bảng tính Excel có công thức, làm slide, trích và gộp PDF, viết thông báo nội bộ."
+  },
+  {
+    "id": "marketing",
+    "name": "Marketing & bán hàng",
+    "title": "Skill Claude cho marketing, SEO và bán hàng",
+    "h1": "Skill marketing, SEO và bán hàng",
+    "intro": "Skill để AI lập kế hoạch marketing, nghiên cứu từ khoá, viết bài SEO, phân tích đối thủ và soạn kịch bản bán hàng, trong đó có các bộ viết riêng cho thị trường Việt Nam."
+  },
+  {
+    "id": "noi-dung",
+    "name": "Viết nội dung",
+    "title": "Skill viết content tiếng Việt cho Claude",
+    "h1": "Skill viết nội dung",
+    "intro": "Skill giúp AI viết tiếng Việt tự nhiên như người làm nghề: landing page, email bán hàng, tin Zalo, tài liệu kỹ thuật, văn bản tài chính."
+  },
+  {
+    "id": "thiet-ke",
+    "name": "Thiết kế",
+    "title": "Skill thiết kế giao diện, poster cho AI",
+    "h1": "Skill thiết kế",
+    "intro": "Skill giúp AI thiết kế giao diện web có cá tính, làm poster, áp bộ nhận diện thương hiệu và rà lỗi giao diện trước khi giao."
+  },
+  {
+    "id": "lap-trinh",
+    "name": "Lập trình",
+    "title": "Claude Code Skill cho lập trình viên",
+    "h1": "Claude Code skill cho lập trình",
+    "intro": "Skill cho Claude Code, Codex, Cursor: quy trình TDD, gỡ lỗi có hệ thống, tối ưu React, xây MCP server, kiểm thử web app tự động."
+  },
+  {
+    "id": "nghien-cuu",
+    "name": "Nghiên cứu & dữ liệu web",
+    "title": "Skill cho AI duyệt web và cào dữ liệu",
+    "h1": "Skill nghiên cứu và dữ liệu web",
+    "intro": "Skill cho AI điều khiển trình duyệt, lấy dữ liệu sạch từ website và nghiên cứu sâu nhiều nguồn."
+  },
+  {
+    "id": "agent",
+    "name": "Xây agent & skill",
+    "title": "Agent Skills: công cụ viết skill và xây AI agent",
+    "h1": "Xây agent và tự viết skill",
+    "intro": "Dành cho người muốn tự đóng gói quy trình thành skill hoặc xây hệ thống AI agent: công cụ tạo skill, tìm skill, kỹ thuật quản lý ngữ cảnh."
+  },
+  {
+    "id": "tu-dong-hoa",
+    "name": "Workflow n8n",
+    "title": "Workflow n8n mẫu miễn phí, template n8n",
+    "h1": "Workflow n8n mẫu",
+    "intro": "Các kho workflow n8n mã nguồn mở lớn nhất, phân loại theo dịch vụ và tình huống. Tải file JSON, import vào n8n là chạy, kèm hướng dẫn tiếng Việt."
+  }
 ]

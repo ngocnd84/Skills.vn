@@ -45,3 +45,24 @@ export const counts = {
 export function vnd(n) {
   return new Intl.NumberFormat('vi-VN').format(n) + 'đ';
 }
+
+const SITE = 'https://skills.vn';
+export function breadcrumb(trail) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: trail.map(([name, path], i) => ({ '@type': 'ListItem', position: i + 1, name, item: SITE + path })),
+  };
+}
+export function itemListLd(list, name) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name,
+    numberOfItems: list.length,
+    itemListElement: list.map((it, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE}/skill/${it.slug}`, name: it.name })),
+  };
+}
+export function inCategory(id) {
+  return items.filter((i) => (id === 'tieng-viet' ? i.lang === 'vi' : i.category === id));
+}

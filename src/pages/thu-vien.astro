@@ -1,13 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import Library from '../components/Library.astro';
-import { counts, scanDate } from '../lib/library.js';
+import { counts, scanDate, items, breadcrumb, itemListLd } from '../lib/library.js';
 const [y, m, d] = scanDate.split('-');
 ---
-<Base title="Thư viện skill AI và workflow n8n" description={`${counts.total} skill AI và kho workflow n8n tuyển chọn, mô tả tiếng Việt, lệnh cài sẵn, quét an toàn ngày ${d}/${m}/${y}.`}>
+<Base title="Thư viện Claude Skill, Agent Skills và workflow n8n" description={`${counts.total} Claude skill, agent skill và kho workflow n8n tuyển chọn, mô tả tiếng Việt, lệnh cài sẵn, quét an toàn ngày ${d}/${m}/${y}.`} jsonLd={[breadcrumb([['Trang chủ', '/'], ['Thư viện', '/thu-vien']]), itemListLd(items, 'Thư viện skills.vn')]}>
   <section class="hero wrap" style="padding-top:40px">
-    <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Thư viện</h1>
-    <p class="lead">{counts.total} skill, bộ skill và kho workflow n8n, quét an toàn lần gần nhất ngày {d}/{m}/{y}. Mục tiếng Việt xếp trước.</p>
+    <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Thư viện Claude Skill và workflow n8n</h1>
+    <p class="lead">{counts.total} skill, bộ agent skill và kho workflow n8n, quét an toàn lần gần nhất ngày {d}/{m}/{y}. Mục tiếng Việt xếp trước.</p>
     <Library autofocus />
   </section>
   <section class="wrap" style="padding:24px 20px 64px">

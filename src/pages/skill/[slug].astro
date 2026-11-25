@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Stamp from '../../components/Stamp.astro';
 import Cmd from '../../components/Cmd.astro';
 import Row from '../../components/Row.astro';
-import { items, SAFETY, KIND, scanDate } from '../../lib/library.js';
+import { items, SAFETY, KIND, scanDate, breadcrumb } from '../../lib/library.js';
 export function getStaticPaths() {
   return items.map((item) => ({ params: { slug: item.slug }, props: { item } }));
 }
@@ -11,6 +11,11 @@ const { item } = Astro.props;
 const related = items.filter((i) => i.category === item.category && i.slug !== item.slug).slice(0, 4);
 const s = SAFETY[item.safety.status];
 const [y, m, d] = scanDate.split('-');
+// Tiêu đề tối đa ~50 ký tự (cộng " | skills.vn" là ~62) để Google không cắt.
+const label = item.kind === 'n8n' ? 'workflow n8n mẫu' : item.kind === 'bo-skill' ? 'bộ Claude Skill' : 'Claude Skill';
+const pageTitle = [`${item.name}: ${label}, cách cài`, `${item.name}: ${label}`, item.name].find((t) => t.length <= 50) ?? item.name;
+const pageDesc = item.summary.length < 110 ? `${item.summary} Mô tả tiếng Việt, lệnh cài sẵn, nhãn quét an toàn.` : item.summary;
+const crumbs = breadcrumb([['Trang chủ', '/'], ['Thư viện', '/thu-vien'], [item.categoryName, `/thu-vien/${item.category}`], [item.name, `/skill/${item.slug}`]]);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareSourceCode',
@@ -22,9 +27,9 @@ const jsonLd = {
   inLanguage: item.lang === 'vi' ? 'vi' : 'en',
 };
 ---
-<Base title={`${item.name}: ${KIND[item.kind].toLowerCase()} cho ${item.platformNames.slice(0, 2).join(', ')}`} description={item.summary}>
+<Base title={pageTitle} description={pageDesc} jsonLd={[jsonLd, crumbs]}>
   <div class="wrap">
-    <p class="crumbs"><a href="/thu-vien">Thư viện</a> / <a href={`/thu-vien?nhom=${item.category}`}>{item.categoryName}</a></p>
+    <p class="crumbs"><a href="/thu-vien">Thư viện</a> / <a href={`/thu-vien/${item.category}`}>{item.categoryName}</a></p>
     <div class="detail">
       <article>
         <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">{item.name}</h1>
@@ -58,9 +63,9 @@ const jsonLd = {
     {related.length > 0 && (
       <section style="padding-bottom:64px">
         <h2>Cùng nhóm {item.categoryName.toLowerCase()}</h2>
+        <p><a href={`/thu-vien/${item.category}`}>Xem tất cả skill nhóm {item.categoryName.toLowerCase()}</a></p>
         <ul class="rows">{related.map((r) => <Row item={r} />)}</ul>
       </section>
     )}
   </div>
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </Base>

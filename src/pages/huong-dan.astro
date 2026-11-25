@@ -2,13 +2,21 @@
 import Base from '../layouts/Base.astro';
 import Cmd from '../components/Cmd.astro';
 import Stamp from '../components/Stamp.astro';
-import { SAFETY } from '../lib/library.js';
+import { SAFETY, breadcrumb } from '../lib/library.js';
+const faq = [
+  ['Claude Skill là gì?', 'Claude Skill là một thư mục chứa file SKILL.md: phần đầu mô tả khi nào dùng, phần sau là hướng dẫn chi tiết, có thể kèm script và tài liệu tham khảo. Claude chỉ đọc phần mô tả cho tới khi việc bạn nhờ khớp, rồi mới nạp toàn bộ hướng dẫn, nên cài nhiều skill không làm chậm AI.'],
+  ['Skill khác prompt thế nào?', 'Prompt phải gõ lại mỗi lần. Skill cài một lần, AI tự dùng đúng lúc, và có thể kèm script, mẫu file, dữ liệu tham khảo mà prompt không chứa được.'],
+  ['Skill có dùng được ngoài Claude không?', 'Có. SKILL.md là chuẩn mở Agent Skills, đọc được bởi Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot và nhiều agent khác.'],
+  ['Cài skill có an toàn không?', 'Skill có thể yêu cầu AI chạy lệnh trên máy bạn, nên cần đọc trước khi cài. skills.vn quét sơ bộ mọi mục trong thư viện mỗi tuần và gắn nhãn Sạch, Cần lưu ý hoặc Rủi ro.'],
+];
+const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
 ---
-<Base title="Cách cài skill cho Claude, Codex, Cursor và workflow n8n" description="Hướng dẫn tiếng Việt cài skill cho app Claude, Claude Code, Codex, Cursor và import workflow n8n, kèm cách đọc nhãn an toàn.">
+<Base title="Claude Skill là gì? Cách cài cho Claude, Codex, n8n" description="Claude Skill là gì, khác prompt thế nào, cách cài skill cho app Claude, Claude Code, Codex, Cursor và import workflow n8n. Hướng dẫn tiếng Việt từng bước." jsonLd={[faqLd, breadcrumb([['Trang chủ', '/'], ['Cách cài skill', '/huong-dan']])]} ogType="article">
   <div class="wrap prose">
     <div class="measure">
-      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Cách cài skill</h1>
+      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Claude Skill là gì và cách cài</h1>
       <p class="lead" style="font-size:1.15rem;color:var(--muted)">Skill là một thư mục có file SKILL.md chứa hướng dẫn cho AI. Cài một lần, AI tự dùng khi việc bạn nhờ khớp với mô tả của skill.</p>
+      {faq.map(([q, a]) => (<><h2>{q}</h2><p>{a}</p></>))}
 
       <h2>App Claude (web, máy tính)</h2>
       <ol>

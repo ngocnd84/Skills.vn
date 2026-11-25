@@ -11,8 +11,10 @@
     "db:local": "wrangler d1 execute skillsvn --local --file=schema.sql"
   },
   "dependencies": {
-    "astro": "^7.4.13",
-    "@astrojs/sitemap": "^3.7.6"
+    "@astrojs/sitemap": "^3.7.6",
+    "@fontsource/be-vietnam-pro": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "astro": "^7.4.13"
   },
   "devDependencies": {
     "wrangler": "^4.168.0"

@@ -1,60 +1,62 @@
 ---
+// Danh sách thư viện. Chỉ render sẵn các mục thuộc trang hiện tại (để Google đọc được),
+// ô tìm kiếm lọc ngay trên các mục đó. Trang chủ gửi từ khoá sang /thu-vien.
 import Row from './Row.astro';
 import { items, categories } from '../lib/library.js';
-const { featuredOnly = false, autofocus = false } = Astro.props;
-const sorted = [...items].sort((a, b) => (b.lang === 'vi') - (a.lang === 'vi') || (b.featured - a.featured) || a.name.localeCompare(b.name, 'vi'));
+const { only = null, featuredOnly = false, autofocus = false } = Astro.props;
+const inCat = (i) => !only || (only === 'tieng-viet' ? i.lang === 'vi' : i.category === only);
+const list = items
+  .filter((i) => inCat(i) && (!featuredOnly || i.featured))
+  .sort((a, b) => (b.lang === 'vi') - (a.lang === 'vi') || (b.featured - a.featured) || a.name.localeCompare(b.name, 'vi'));
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
 ---
-<div class="library" data-featured-only={featuredOnly ? '1' : '0'}>
-  <form class="search" role="search" onsubmit="return false">
+<div class="library">
+  <form class="search" role="search" action="/thu-vien" method="get" data-live={featuredOnly ? '0' : '1'}>
     <label class="sr-only" for="q">Tìm skill</label>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="q" type="search" placeholder="Tìm: viết content, Excel, Zalo, SEO, n8n…" autocomplete="off" autofocus={autofocus} />
+    <input id="q" name="q" type="search" placeholder="Tìm: viết content, Excel, Zalo, SEO, n8n…" autocomplete="off" autofocus={autofocus} />
   </form>
-  <ul class="chips" aria-label="Lọc theo nhóm">
-    <li><button class="chip" type="button" data-cat="" aria-pressed="true">Tất cả</button></li>
-    <li><button class="chip" type="button" data-cat="__vi" aria-pressed="false">Viết bằng tiếng Việt</button></li>
-    {categories.map((c) => <li><button class="chip" type="button" data-cat={c.id} aria-pressed="false">{c.name}</button></li>)}
-  </ul>
-  <p class="result-meta" aria-live="polite"></p>
+  <nav aria-label="Nhóm skill">
+    <ul class="chips">
+      <li><a class="chip" href="/thu-vien" aria-current={path === '/thu-vien' ? 'page' : undefined}>Tất cả</a></li>
+      {categories.map((c) => (
+        <li><a class="chip" href={`/thu-vien/${c.id}`} aria-current={path === `/thu-vien/${c.id}` ? 'page' : undefined}>{c.name}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <p class="result-meta" aria-live="polite">
+    {featuredOnly ? <>{list.length} mục nổi bật trong {items.length} mục. <a href="/thu-vien">Xem cả thư viện</a></> : `${list.length} mục`}
+  </p>
   <ul class="rows">
-    {sorted.map((item) => <Row item={item} />)}
-    <li class="empty" hidden>Không có skill nào khớp. Thử từ khác, hoặc <a href="/dich-vu">nhờ chúng tôi viết skill riêng</a>.</li>
+    {list.map((item) => <Row item={item} />)}
+    <li class="empty" hidden>Không có mục nào khớp. Thử từ khác, xem <a href="/thu-vien">cả thư viện</a>, hoặc <a href="/dich-vu">nhờ chúng tôi viết skill riêng</a>.</li>
   </ul>
 </div>
 <script>
-  for (const root of document.querySelectorAll('.library')) {
-    const featuredOnly = root.dataset.featuredOnly === '1';
-    const input = root.querySelector('#q');
-    const chips = [...root.querySelectorAll('.chip')];
+  for (const form of document.querySelectorAll('.library .search[data-live="1"]')) {
+    const root = form.closest('.library');
+    const input = form.querySelector('input');
     const rows = [...root.querySelectorAll('.row')];
     const meta = root.querySelector('.result-meta');
     const empty = root.querySelector('.empty');
-    const params = new URLSearchParams(location.search);
-    let cat = params.get('nhom') || (params.get('loai') === 'n8n' ? 'tu-dong-hoa' : '');
-    if (params.get('q')) input.value = params.get('q');
+    const total = rows.length;
     const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').toLowerCase();
     rows.forEach((r) => (r.dataset.norm = norm(r.dataset.search)));
-
+    form.addEventListener('submit', (e) => e.preventDefault());
     function apply() {
       const q = norm(input.value.trim());
-      const browsing = featuredOnly && !q && !cat;
       let shown = 0;
       for (const r of rows) {
-        const matchCat = !cat || (cat === '__vi' ? r.dataset.lang === 'vi' : r.dataset.cat === cat);
-        const matchQ = !q || q.split(/\s+/).every((w) => r.dataset.norm.includes(w));
-        const matchFeatured = !browsing || r.dataset.featured === '1';
-        const show = matchCat && matchQ && matchFeatured;
+        const show = !q || q.split(/\s+/).every((w) => r.dataset.norm.includes(w));
         r.hidden = !show;
         if (show) shown++;
       }
       empty.hidden = shown > 0;
-      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.cat === cat)));
-      meta.innerHTML = browsing
-        ? `Đang hiện ${shown} mục nổi bật trong ${rows.length} mục. <a href="/thu-vien">Xem cả thư viện</a>`
-        : `${shown} kết quả`;
+      meta.textContent = q ? `${shown} kết quả cho “${input.value.trim()}”` : `${total} mục`;
     }
+    const q = new URLSearchParams(location.search).get('q');
+    if (q) input.value = q;
     input.addEventListener('input', apply);
-    chips.forEach((c) => c.addEventListener('click', () => { cat = c.dataset.cat; apply(); }));
     apply();
   }
 </script>

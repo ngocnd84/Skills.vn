@@ -3,5 +3,10 @@
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
   X-Frame-Options: SAMEORIGIN
+
+# Bản xem trước trên *.pages.dev không được Google lập chỉ mục, tránh trùng nội dung với skills.vn
+https://:project.pages.dev/*
+  X-Robots-Tag: noindex
+
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

@@ -1,5 +1,6 @@
 ---
 import site from '../data/site.json';
+import categories from '../data/categories.json';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
@@ -17,6 +18,9 @@ const year = new Date().getFullYear();
       )}
       <p style="margin:8px 0 0">© {year}. Skill miễn phí thuộc về tác giả gốc, chúng tôi chỉ mô tả và dẫn link.</p>
     </div>
+    <nav aria-label="Nhóm skill" style="max-width:520px">
+      {categories.map((c) => <a href={`/thu-vien/${c.id}`}>{c.name}</a>)}
+    </nav>
     <nav aria-label="Chân trang">
       <a href="/thu-vien">Thư viện</a>
       <a href="/pro">Gói Pro</a>
