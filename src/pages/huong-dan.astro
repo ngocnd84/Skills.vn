@@ -1,57 +1,50 @@
 ---
 import Base from '../layouts/Base.astro';
 import Cmd from '../components/Cmd.astro';
-import Stamp from '../components/Stamp.astro';
-import { SAFETY, breadcrumb } from '../lib/library.js';
+import { breadcrumb, faqLd } from '../lib/site.js';
 const faq = [
   ['Claude Skill là gì?', 'Claude Skill là một thư mục chứa file SKILL.md: phần đầu mô tả khi nào dùng, phần sau là hướng dẫn chi tiết, có thể kèm script và tài liệu tham khảo. Claude chỉ đọc phần mô tả cho tới khi việc bạn nhờ khớp, rồi mới nạp toàn bộ hướng dẫn, nên cài nhiều skill không làm chậm AI.'],
   ['Skill khác prompt thế nào?', 'Prompt phải gõ lại mỗi lần. Skill cài một lần, AI tự dùng đúng lúc, và có thể kèm script, mẫu file, dữ liệu tham khảo mà prompt không chứa được.'],
-  ['Skill có dùng được ngoài Claude không?', 'Có. SKILL.md là chuẩn mở Agent Skills, đọc được bởi Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot và nhiều agent khác.'],
-  ['Cài skill có an toàn không?', 'Skill có thể yêu cầu AI chạy lệnh trên máy bạn, nên cần đọc trước khi cài. skills.vn quét sơ bộ mọi mục trong thư viện mỗi tuần và gắn nhãn Sạch, Cần lưu ý hoặc Rủi ro.'],
+  ['Skill có dùng được ngoài Claude không?', 'Có. SKILL.md là chuẩn mở Agent Skills, đọc được bởi Claude Code, Codex, Cursor, Gemini CLI, GitHub Copilot và nhiều agent khác. Với ChatGPT hay Gemini trên web, bạn dùng phần prompt mẫu đi kèm mỗi skill.'],
+  ['Cài skill của người khác có an toàn không?', 'Skill có thể yêu cầu AI chạy lệnh trên máy bạn, nên hãy đọc SKILL.md và mọi script đi kèm trước khi cài. Skill trên skills.vn chỉ gồm văn bản hướng dẫn, không kèm script.'],
 ];
-const faqLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) };
 ---
-<Base title="Claude Skill là gì? Cách cài cho Claude, Codex, n8n" description="Claude Skill là gì, khác prompt thế nào, cách cài skill cho app Claude, Claude Code, Codex, Cursor và import workflow n8n. Hướng dẫn tiếng Việt từng bước." jsonLd={[faqLd, breadcrumb([['Trang chủ', '/'], ['Cách cài skill', '/huong-dan']])]} ogType="article">
+<Base title="Claude Skill là gì? Cách cài cho Claude, Claude Code" description="Claude Skill là gì, khác prompt thế nào, cách cài SKILL.md cho app Claude, Claude Code, Codex và dùng prompt mẫu với ChatGPT, Gemini. Hướng dẫn tiếng Việt từng bước." jsonLd={[faqLd(faq), breadcrumb([['Trang chủ', '/'], ['Cách cài skill', '/huong-dan']])]} ogType="article">
   <div class="wrap prose">
     <div class="measure">
+      <nav class="crumbs" aria-label="Đường dẫn" style="margin-top:0"><a href="/">Trang chủ</a> / Cách cài skill</nav>
       <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Claude Skill là gì và cách cài</h1>
-      <p class="lead" style="font-size:1.15rem;color:var(--muted)">Skill là một thư mục có file SKILL.md chứa hướng dẫn cho AI. Cài một lần, AI tự dùng khi việc bạn nhờ khớp với mô tả của skill.</p>
+      <p class="lead">Skill là một thư mục có file SKILL.md chứa hướng dẫn cho AI. Cài một lần, AI tự dùng khi việc bạn nhờ khớp với mô tả của skill.</p>
       {faq.map(([q, a]) => (<><h2>{q}</h2><p>{a}</p></>))}
 
       <h2>App Claude (web, máy tính)</h2>
       <ol>
-        <li>Tải thư mục skill về máy, nén thành file .zip (thư mục chứa SKILL.md nằm ở gốc file nén).</li>
-        <li>Trong Claude, mở Customize → Skills, bấm + rồi chọn Upload a skill.</li>
-        <li>Chọn file .zip. Cần gói Claude có hỗ trợ Skills và bật chạy mã.</li>
+        <li>Mở trang skill trên skills.vn, bấm <b>Tải SKILL.md</b>.</li>
+        <li>Tạo thư mục mang tên skill (ví dụ <code>soan-cong-van</code>), đặt file SKILL.md vào, rồi nén thư mục thành file .zip.</li>
+        <li>Trong Claude, mở Customize → Skills, bấm + rồi chọn Upload a skill và chọn file .zip.</li>
       </ol>
+      <p>Cần gói Claude có hỗ trợ Skills và bật chạy mã trong phần cài đặt.</p>
 
-      <h2>Claude Code, Codex, Cursor và các agent khác</h2>
-      <p>Cách nhanh nhất là dùng skills CLI mã nguồn mở. Máy cần có Node.js.</p>
-      <Cmd label="Cài cả bộ skill trong một repo" cmd="npx skills add chu-repo/ten-repo" />
-      <Cmd label="Chỉ cài một skill" cmd="npx skills add anthropics/skills --skill docx" />
-      <Cmd label="Cài cho mọi agent, dùng chung trên máy" cmd="npx skills add chu-repo/ten-repo -g" />
-      <p>Với Claude Code, nhiều bộ skill còn có dạng plugin:</p>
-      <Cmd label="Claude Code" cmd={"/plugin marketplace add chu-repo/ten-repo\n/plugin install ten-plugin@ten-marketplace"} />
-      <p>Cài tay: chép thư mục skill vào <code>~/.claude/skills/</code> (Claude Code) hoặc <code>~/.codex/skills/</code> (Codex).</p>
+      <h2>Claude Code</h2>
+      <p>Đặt file vào thư mục skill của Claude Code. Lần chạy sau Claude Code tự nhận skill.</p>
+      <Cmd label="Skill dùng cho mọi dự án" cmd={"mkdir -p ~/.claude/skills/ten-skill\nmv ~/Downloads/SKILL.md ~/.claude/skills/ten-skill/"} />
+      <Cmd label="Skill chỉ dùng trong một dự án" cmd={"mkdir -p .claude/skills/ten-skill\nmv ~/Downloads/SKILL.md .claude/skills/ten-skill/"} />
+      <p>Codex dùng thư mục <code>~/.codex/skills/</code> theo cách tương tự.</p>
 
-      <h2>Workflow n8n</h2>
+      <h2>ChatGPT, Gemini, Copilot</h2>
       <ol>
-        <li>Tải file .json của workflow.</li>
-        <li>Trong n8n, vào Workflows, bấm Import from File và chọn file.</li>
-        <li>Mở từng node có biểu tượng cảnh báo để nối tài khoản của bạn (Google, Zalo, OpenAI…), rồi bấm chạy thử.</li>
+        <li>Trên trang skill, bấm <b>Chép prompt mẫu</b>.</li>
+        <li>Dán vào khung chat, thay phần mô tả bằng dữ kiện thật của bạn.</li>
+        <li>Muốn dùng lại nhiều lần, dán nội dung SKILL.md vào phần Custom Instructions hoặc tạo một GPT, Gem riêng.</li>
       </ol>
 
-      <h2 id="an-toan">Đọc nhãn an toàn</h2>
-      <p>Mỗi tuần skills.vn đọc lại file hướng dẫn của từng mục và tìm các mẫu nguy hiểm thường gặp trong skill độc hại.</p>
-      <dl class="facts" style="gap:14px 16px;margin:16px 0">
-        {Object.keys(SAFETY).map((k) => (<><dt><Stamp status={k} /></dt><dd>{SAFETY[k].note}</dd></>))}
-      </dl>
-      <p>Nhãn là lớp lọc đầu tiên, không phải bảo đảm. Trước khi cài lên máy có dữ liệu công ty:</p>
+      <h2>Mẹo viết lại skill cho công ty bạn</h2>
       <ul>
-        <li>Mở repo, đọc SKILL.md và mọi file trong thư mục scripts.</li>
-        <li>Cảnh giác với lệnh tải file từ mạng rồi chạy, lệnh đọc khoá SSH hay file .env.</li>
-        <li>Ưu tiên skill của nhà phát hành chính thức hoặc tác giả có lịch sử rõ ràng.</li>
+        <li>Giữ phần mô tả ở đầu file thật cụ thể: việc gì, cho ai, khi nào dùng. AI dựa vào đây để chọn skill.</li>
+        <li>Thêm ví dụ thật của công ty: mẫu báo giá, giọng văn, quy định nội bộ.</li>
+        <li>Mỗi skill chỉ làm một việc. Việc lớn thì tách thành nhiều skill rồi ghép thành <a href="/bots">bot</a>.</li>
       </ul>
+      <p>Đọc thêm: <a href="/sach/tu-prompt-skill-agent-bot-team">Từ prompt tới skill, agent, bot và team</a>.</p>
     </div>
   </div>
 </Base>

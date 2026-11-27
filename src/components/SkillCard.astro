@@ -1,0 +1,22 @@
+---
+import { fold } from '../lib/site.js';
+const { skill: s, heading = 'h3' } = Astro.props;
+const H = heading;
+const haystack = fold([s.name, s.description, s.category, s.subcategory, ...s.tags].join(' '));
+---
+<li class="card" data-search={haystack} data-cat={s.categorySlug} data-slug={s.slug}>
+  <div class="card-head">
+    <span class="emoji" aria-hidden="true">{s.emoji}</span>
+    <div>
+      <H><a href={`/skill/${s.slug}`}>{s.name}</a></H>
+      <p class="card-sub">{s.category} · {s.subcategory}</p>
+    </div>
+  </div>
+  <p class="desc">{s.description}</p>
+  <ul class="tags">{s.tags.slice(0, 3).map((t) => <li>{t}</li>)}</ul>
+  <div class="card-actions">
+    <button class="btn btn-ghost btn-sm" data-copy={s.prompt} data-copy-msg="Đã chép prompt mẫu">Chép prompt</button>
+    <a class="btn btn-ghost btn-sm" href={`/skill/${s.slug}#skill-md`}>SKILL.md</a>
+    <button class="fav" data-fav={s.slug} aria-pressed="false" aria-label={`Lưu ${s.name} vào yêu thích`} style="margin-left:auto">♡</button>
+  </div>
+</li>

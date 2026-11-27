@@ -1,0 +1,80 @@
+[
+  {
+    "slug": "prompt-co-ban",
+    "number": 1,
+    "title": "Prompt cơ bản",
+    "desc": "Viết prompt rõ ràng: vai trò, mục tiêu, ngữ cảnh và định dạng đầu ra.",
+    "paras": [
+      "Prompt tốt bắt đầu từ mục tiêu rõ ràng. Hãy nói AI biết bạn muốn kết quả gì, dành cho ai và dùng ở đâu. Một câu mục tiêu cụ thể tốt hơn mười câu chung chung.",
+      "Thêm vai trò cho AI: bạn là chuyên gia, gia sư hay biên tập viên? Vai trò giúp AI chọn giọng văn, độ sâu và cách trình bày phù hợp.",
+      "Đưa ngữ cảnh và ràng buộc: ngân sách, thời gian, đối tượng và định dạng. AI làm tốt nhất khi biết giới hạn và tiêu chí đánh giá.",
+      "Luôn yêu cầu cấu trúc: mục tiêu, bản nháp, lựa chọn thay thế và checklist. Cấu trúc giúp bạn kiểm tra nhanh và dùng ngay.",
+      "Kết thúc bằng bước tiếp theo: bạn nên làm gì sau khi nhận kết quả. Prompt tốt không chỉ cho đáp án mà còn cho hành động."
+    ]
+  },
+  {
+    "slug": "chain-of-thought",
+    "number": 2,
+    "title": "Chain-of-Thought",
+    "desc": "Hướng dẫn AI suy luận từng bước: phân rã vấn đề, kiểm tra giả định và giảm lỗi.",
+    "paras": [
+      "Chain-of-Thought là cách yêu cầu AI suy luận từng bước thay vì nhảy thẳng tới đáp án. Khi vấn đề có nhiều bước, cách này giảm lỗi rõ rệt.",
+      "Bắt đầu bằng việc phân rã vấn đề: đâu là dữ kiện đã biết, đâu là giả định, đâu là bước cần tính. Viết từng bước ra giấy trước khi nhờ AI.",
+      "Yêu cầu AI kiểm tra giả định ở mỗi bước. Nếu một giả định sai, kết quả cuối cùng cũng sai. Kiểm tra sớm giúp bạn sửa nhanh.",
+      "Dùng ví dụ có suy luận mẫu: cho AI xem một bài giải từng bước, rồi yêu cầu làm bài tương tự theo cùng cách.",
+      "Kết thúc bằng kiểm tra ngược: đáp án có hợp lý không, có mâu thuẫn với dữ kiện ban đầu không. Nếu có, quay lại bước gây lỗi."
+    ]
+  },
+  {
+    "slug": "few-shot",
+    "number": 3,
+    "title": "Few-Shot",
+    "desc": "Dạy AI bằng ví dụ: cho 2-3 ví dụ mẫu đúng chuẩn để AI bắt chước phong cách.",
+    "paras": [
+      "Few-shot là dạy AI bằng ví dụ. Thay vì mô tả phong cách bằng lời, bạn cho AI xem 2-3 ví dụ mẫu đúng chuẩn.",
+      "Chọn ví dụ đa dạng: một ví dụ dễ, một ví dụ khó và một ví dụ biên. Đa dạng giúp AI không học vẹt một mẫu.",
+      "Giữ định dạng ví dụ nhất quán: cùng cấu trúc, cùng cách đánh dấu đầu vào và đầu ra. Nhất quán giúp AI nhận ra quy tắc.",
+      "Sau ví dụ, đưa ví dụ mới và yêu cầu AI làm theo đúng định dạng. Nếu AI lệch, chỉ ra chỗ lệch và yêu cầu sửa.",
+      "Few-shot đặc biệt hiệu quả cho viết caption, mô tả sản phẩm, email và phân loại dữ liệu."
+    ]
+  },
+  {
+    "slug": "tu-prompt-skill-agent-bot-team",
+    "number": 4,
+    "title": "Từ Prompt → Skill → Agent → Bot → Team",
+    "desc": "Lộ trình xây hệ thống AI dùng lại được: bắt đầu từ một prompt tốt, đóng gói thành skill, rồi mở rộng thành agent và team.",
+    "paras": [
+      "Mọi hệ thống AI tốt đều bắt đầu từ một prompt tốt. Prompt đó là hạt giống: bạn thử, sửa và giữ lại phiên bản hiệu quả nhất.",
+      "Khi prompt đã ổn định, đóng gói nó thành skill: thêm tên, mô tả kích hoạt, workflow và ví dụ. Skill giúp AI tự chọn đúng công cụ đúng lúc.",
+      "Skill chạy nhiều lần sẽ thành agent: agent nhớ ngữ cảnh, dùng nhiều skill và tự kiểm tra kết quả. Agent phù hợp cho quy trình dài.",
+      "Agent đóng gói thành bot: bot có lệnh, menu và luồng rõ ràng để người khác dùng được mà không cần biết prompt.",
+      "Nhiều bot phối hợp thành team: mỗi bot làm một việc, chuyền kết quả cho bot tiếp theo. Team là cách mở rộng quy mô mà vẫn giữ chất lượng."
+    ]
+  },
+  {
+    "slug": "vibe-coding-vs-agentic-engineering",
+    "number": 5,
+    "title": "Vibe Coding vs Agentic Engineering",
+    "desc": "Khi nào nên code nhanh theo cảm hứng, khi nào cần quy trình chặt chẽ, kiểm thử và skill dùng lại được.",
+    "paras": [
+      "Vibe coding là code nhanh theo cảm hứng: bạn mô tả ý tưởng, AI viết code, bạn thử ngay. Cách này tuyệt vời cho prototype và ý tưởng mới.",
+      "Agentic engineering là code có quy trình: yêu cầu rõ ràng, skill dùng lại được, kiểm thử và review. Cách này phù hợp cho sản phẩm thật.",
+      "Chọn vibe coding khi bạn cần học nhanh, thử ý tưởng hoặc làm demo. Đừng dùng nó cho code xử lý tiền, dữ liệu nhạy cảm hoặc hệ thống lớn.",
+      "Chọn agentic engineering khi code sẽ được nhiều người dùng, cần bảo trì lâu dài hoặc có rủi ro cao. Quy trình chậm lúc đầu nhưng nhanh về sau.",
+      "Kết hợp cả hai: vibe coding để khám phá, agentic engineering để đóng gói. Prototype hôm nay có thể thành skill ngày mai."
+    ]
+  },
+  {
+    "slug": "computer-use",
+    "number": 6,
+    "title": "Computer Use",
+    "desc": "AI dùng máy tính như người: mở ứng dụng, đọc màn hình, thao tác và kiểm tra kết quả.",
+    "paras": [
+      "Computer Use là khi AI không chỉ viết chữ mà còn thao tác trên máy tính: mở ứng dụng, đọc màn hình và bấm nút.",
+      "Bắt đầu bằng nhiệm vụ nhỏ: mở file, điền form, chụp màn hình và kiểm tra kết quả. Nhiệm vụ nhỏ giúp bạn thấy AI làm đúng hay sai.",
+      "Luôn yêu cầu AI nói rõ nó sẽ làm gì trước khi làm. Với thao tác xóa, gửi hoặc thanh toán, bạn phải xác nhận trước.",
+      "Sau mỗi bước, yêu cầu AI chụp lại màn hình và mô tả những gì nó thấy. Kiểm tra bằng mắt giúp bạn phát hiện lỗi sớm.",
+      "Computer Use mở ra nhiều việc mới: nhập liệu, kiểm tra website, tổng hợp báo cáo. Nhưng hãy giữ con người kiểm soát bước quan trọng."
+    ]
+  }
+]

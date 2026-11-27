@@ -1,8 +1,9 @@
 ---
 import '@fontsource/be-vietnam-pro/400.css';
-import '@fontsource/be-vietnam-pro/500.css';
 import '@fontsource/be-vietnam-pro/600.css';
 import '@fontsource/be-vietnam-pro/700.css';
+import '@fontsource/be-vietnam-pro/800.css';
+import '@fontsource/be-vietnam-pro/900.css';
 import '@fontsource/jetbrains-mono/latin-400.css';
 import '../styles/global.css';
 import site from '../data/site.json';
@@ -10,12 +11,12 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 const {
   title,
-  description = 'Thư viện Claude Skill và workflow n8n cho người Việt: mô tả tiếng Việt, lệnh cài sẵn để chép, quét an toàn hằng tuần trước khi bạn cài.',
+  description = 'Thư viện Claude Skill và prompt tiếng Việt cho 24 ngành nghề: tải SKILL.md, chép prompt mẫu, dùng ngay với Claude, Claude Code, ChatGPT, Gemini.',
   noindex = false,
   jsonLd = [],
   ogType = 'website',
 } = Astro.props;
-const fullTitle = title ? `${title} | skills.vn` : 'Claude Skill tiếng Việt, đã quét an toàn | skills.vn';
+const fullTitle = title ? `${title} | skills.vn` : 'Claude Skill & Prompt tiếng Việt cho 24 ngành | skills.vn';
 const ogImage = new URL('/og.png', Astro.site).href;
 const schemas = Array.isArray(jsonLd) ? jsonLd : [jsonLd];
 const cleanPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
@@ -29,46 +30,103 @@ const canonical = new URL(cleanPath, Astro.site).href;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="robots" content={noindex ? 'noindex' : 'index, follow, max-image-preview:large, max-snippet:-1'} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content={ogType} />
     <meta property="og:site_name" content={site.name} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={ogImage} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="vi_VN" />
-    <meta name="theme-color" content="#102a2e" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="skills.vn — Thư viện Claude Skill và prompt tiếng Việt" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0d130f" media="(prefers-color-scheme: dark)" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="Tóm tắt cho công cụ AI" />
     {schemas.map((s) => <script type="application/ld+json" set:html={JSON.stringify(s)} />)}
   </head>
   <body>
+    <a class="sr-only" href="#main">Bỏ qua, đến nội dung chính</a>
     <Header />
     <main id="main"><slot /></main>
     <Footer />
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
     <script>
+      const toastEl = document.getElementById('toast');
+      let toastTimer;
+      const toast = (msg) => {
+        toastEl.textContent = msg;
+        toastEl.hidden = false;
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => (toastEl.hidden = true), 2000);
+      };
+
       const toggle = document.querySelector('.menu-toggle');
       const nav = document.querySelector('.nav');
       toggle?.addEventListener('click', () => {
         const open = nav.classList.toggle('open');
         toggle.setAttribute('aria-expanded', String(open));
       });
+
+      // Yêu thích: lưu trên trình duyệt của người dùng.
+      const FAV = 'skillsvn:fav';
+      const readFav = () => { try { return JSON.parse(localStorage.getItem(FAV) || '[]'); } catch { return []; } };
+      const writeFav = (list) => { try { localStorage.setItem(FAV, JSON.stringify(list)); } catch {} };
+      const paintFav = () => {
+        const fav = readFav();
+        document.querySelectorAll('[data-fav]').forEach((b) => {
+          const on = fav.includes(b.dataset.fav);
+          b.setAttribute('aria-pressed', String(on));
+          b.textContent = on ? '♥' : '♡';
+        });
+        document.dispatchEvent(new CustomEvent('fav-change', { detail: fav }));
+      };
+      paintFav();
+
+      const textOf = (el) => {
+        if (el.dataset.copy) return el.dataset.copy;
+        const src = el.dataset.copyFrom && document.getElementById(el.dataset.copyFrom);
+        return src ? src.textContent : '';
+      };
+
       document.addEventListener('click', async (e) => {
-        const btn = e.target.closest('[data-copy]');
+        const fav = e.target.closest('[data-fav]');
+        if (fav) {
+          const list = readFav();
+          const id = fav.dataset.fav;
+          const next = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+          writeFav(next);
+          paintFav();
+          toast(next.includes(id) ? 'Đã lưu vào Yêu thích' : 'Đã bỏ khỏi Yêu thích');
+          return;
+        }
+        const dl = e.target.closest('[data-download]');
+        if (dl) {
+          const src = document.getElementById(dl.dataset.copyFrom);
+          const blob = new Blob([src ? src.textContent : ''], { type: 'text/markdown' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = dl.dataset.download;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          toast('Đã tải file SKILL.md');
+          return;
+        }
+        const btn = e.target.closest('[data-copy], [data-copy-from]');
         if (!btn) return;
         try {
-          await navigator.clipboard.writeText(btn.dataset.copy);
-          const old = btn.textContent;
-          btn.textContent = 'Đã chép';
-          setTimeout(() => (btn.textContent = old), 1600);
+          await navigator.clipboard.writeText(textOf(btn));
+          toast(btn.dataset.copyMsg || 'Đã chép');
         } catch {
-          btn.textContent = 'Chép thủ công';
+          toast('Không chép được, hãy bôi đen và chép thủ công');
         }
       });
     </script>

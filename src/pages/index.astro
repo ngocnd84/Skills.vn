@@ -1,65 +1,146 @@
 ---
 import Base from '../layouts/Base.astro';
-import Library from '../components/Library.astro';
-import Stamp from '../components/Stamp.astro';
-import { counts, SAFETY, vnd } from '../lib/library.js';
-import products from '../data/products.json';
+import SkillCard from '../components/SkillCard.astro';
+import GopSkill from '../components/GopSkill.astro';
 import site from '../data/site.json';
+import { categories, featured, bots, teams, books, counts, skillsIn, itemListLd, faqLd, SITE } from '../lib/site.js';
+
+const suggestions = ['hợp đồng', 'PRD', 'SEO', 'menu', 'tour', 'thuế', 'BĐS', 'xe', 'giáo án', 'Shopee'];
+const faq = [
+  ['Claude Skill là gì?', 'Claude Skill là một thư mục có file SKILL.md chứa hướng dẫn cho AI: dùng khi nào, làm theo các bước nào, kiểm tra ra sao. Cài một lần, Claude tự dùng khi việc bạn nhờ khớp với mô tả của skill.'],
+  ['Skill trên skills.vn có mất phí không?', `Toàn bộ ${counts.skills} skill và prompt mẫu trong thư viện đều miễn phí. Gói Pro là các bộ skill chuyên sâu viết riêng cho doanh nghiệp Việt, bán riêng.`],
+  ['Dùng skill với ChatGPT hay Gemini được không?', 'Được. File SKILL.md cài trực tiếp cho Claude và Claude Code. Với ChatGPT, Gemini hay Copilot, bạn chép phần prompt mẫu trên mỗi trang skill và dán vào khung chat.'],
+  ['Tôi có thể góp skill của mình không?', 'Có. Gửi skill qua form góp skill ở cuối trang. Chúng tôi đọc, thử và đăng lên thư viện kèm tên bạn nếu bạn đồng ý.'],
+];
 const orgLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'skills.vn',
+  url: SITE,
+  logo: `${SITE}/favicon.svg`,
   ...(site.company ? { legalName: site.company } : {}),
-  url: 'https://skills.vn',
-  logo: 'https://skills.vn/favicon.svg',
   ...(site.email ? { email: site.email } : {}),
-  ...(site.hotline ? { telephone: site.hotline } : {}),
 };
-const webLd = { '@context': 'https://schema.org', '@type': 'WebSite', name: 'skills.vn', url: 'https://skills.vn', inLanguage: 'vi' };
-const cheapest = Math.min(...products.plans.map((p) => p.price));
+const webLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'skills.vn',
+  url: SITE,
+  inLanguage: 'vi',
+  potentialAction: { '@type': 'SearchAction', target: `${SITE}/thu-vien?q={search_term_string}`, 'query-input': 'required name=search_term_string' },
+};
 ---
-<Base jsonLd={[orgLd, webLd]}>
-  <section class="hero wrap">
-    <h1>Claude Skill tiếng Việt, quét an toàn trước khi bạn cài.</h1>
-    <p class="lead">Thư viện agent skill cho Claude, Codex, Cursor và workflow n8n mẫu. Mỗi mục có mô tả tiếng Việt, lệnh cài để chép, và kết quả quét dấu hiệu độc hại.</p>
-    <Library featuredOnly autofocus={false} />
-  </section>
-
-  <section class="section wrap">
-    <div class="detail" style="padding-bottom:0">
-      <div class="measure">
-        <h2>Vì sao phải quét trước khi cài</h2>
-        <p>Skill là hướng dẫn mà AI làm theo trên máy bạn, kể cả chạy lệnh. Tháng 2/2026, Snyk quét 3.984 skill công khai: 13,4% có lỗi bảo mật nghiêm trọng và 76 skill chứa mã độc (<a href="https://research.snyk.io/blog/agent-skills-threat-landscape/" rel="noopener">báo cáo Snyk</a>).</p>
-        <p>skills.vn đọc file hướng dẫn của từng skill mỗi tuần, tìm các mẫu nguy hiểm như tải script rồi chạy thẳng, lấy khoá SSH, gửi dữ liệu ra ngoài, hay câu lệnh chèn để vượt hướng dẫn. Đây là lớp lọc đầu tiên, không thay cho việc bạn đọc mã trước khi cài vào máy công ty.</p>
-        <p><a href="/huong-dan#an-toan">Cách đọc nhãn an toàn</a></p>
+<Base
+  description={`${counts.skills} Claude Skill và prompt tiếng Việt cho ${counts.categories} ngành: viết content, hợp đồng, thuế, bất động sản, Shopee, giáo án. Tải SKILL.md hoặc chép prompt miễn phí.`}
+  jsonLd={[orgLd, webLd, itemListLd(featured, 'Skill nổi bật'), faqLd(faq)]}
+>
+  <section class="hero-grid">
+    <div class="wrap hero">
+      <p class="badge" style="display:inline-block">Claude Skill · Prompt · Bot · 24 ngành nghề</p>
+      <h1>Thư viện Claude Skill & prompt tiếng Việt cho mọi ngành nghề</h1>
+      <p class="lead">{counts.skills} skill và {counts.prompts} prompt mẫu viết sẵn cho công việc thật ở Việt Nam: soạn hợp đồng, kê khai thuế, đăng tin BĐS, tối ưu Shopee, lên giáo án. Tải SKILL.md cho Claude hoặc chép prompt cho ChatGPT, Gemini.</p>
+      <form class="search" role="search" action="/thu-vien" method="get">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <label class="sr-only" for="home-q">Tìm skill</label>
+        <input id="home-q" name="q" type="search" placeholder="Tìm skill: thuế, BĐS, xe, tour, menu, hợp đồng..." />
+        <button class="btn btn-primary" type="submit">Tìm skill</button>
+      </form>
+      <p class="suggest">Tìm nhiều: {suggestions.map((s) => <a href={`/thu-vien?q=${encodeURIComponent(s)}`}>{s}</a>)}</p>
+      <div class="stats">
+        <div><b>{counts.skills}</b><span>Skill</span></div>
+        <div><b>{counts.prompts}</b><span>Prompt mẫu</span></div>
+        <div><b>{counts.categories}</b><span>Ngành nghề</span></div>
+        <div><b>{counts.bots} + {counts.teams}</b><span>Mẫu bot & team</span></div>
       </div>
-      <dl class="facts" style="align-self:start;gap:14px 16px">
-        {Object.keys(SAFETY).map((k) => (<><dt><Stamp status={k} /></dt><dd>{SAFETY[k].note}</dd></>))}
-      </dl>
     </div>
   </section>
 
-  <section class="band">
-    <div class="wrap section">
-      <h2 style="color:#fff">Miễn phí để tìm, trả phí khi cần thứ viết riêng cho Việt Nam</h2>
-      <p class="muted measure">{counts.total} mục trong thư viện, {counts.vi} mục viết bằng tiếng Việt, {counts.n8n} kho workflow n8n. Danh sách được cập nhật hằng tuần.</p>
-      <div class="tiers">
-        <div class="tier">
-          <h3>Thư viện miễn phí</h3>
-          <p class="muted">Skill và workflow mã nguồn mở tuyển chọn, mô tả tiếng Việt, dẫn về repo gốc của tác giả.</p>
-          <p><a href="/thu-vien">Mở thư viện</a></p>
+  <section class="wrap section">
+    <div class="section-head">
+      <div><p class="eyebrow">Skill nổi bật</p><h2>Chọn skill, chép là chạy</h2></div>
+      <a class="btn btn-ghost" href="/thu-vien">Xem cả {counts.skills} skill</a>
+    </div>
+    <ul class="grid">{featured.map((s) => <SkillCard skill={s} />)}</ul>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div><p class="eyebrow">Theo ngành nghề</p><h2>Skill cho đúng công việc của bạn</h2></div>
+        <a class="btn btn-ghost" href="/nganh">Tất cả ngành</a>
+      </div>
+      <ul class="grid grid-4">
+        {categories.map((c) => {
+          const list = skillsIn(c.slug);
+          return (
+            <li><a class="tile" href={`/nganh/${c.slug}`}>
+              <span class="emoji" aria-hidden="true">{c.emoji}</span>
+              <span><b>{c.name}</b><small>{list.length} skill</small></span>
+            </a></li>
+          );
+        })}
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="section-head">
+      <div><p class="eyebrow">Bots & Teams</p><h2>Ghép nhiều skill thành một bot làm việc</h2></div>
+      <a class="btn btn-ghost" href="/bots">Xem {counts.bots} mẫu bot</a>
+    </div>
+    <p class="muted measure">Mỗi mẫu bot là một bộ skill đi cùng nhau cho một việc trọn vẹn. Ghép vài bot thành một team để chạy cả quy trình, từ ý tưởng tới bàn giao.</p>
+    <ul class="grid">
+      {teams.slice(0, 3).map((t) => (
+        <li class="card">
+          <div class="card-head"><span class="emoji" aria-hidden="true">{t.emoji}</span><div><h3><a href={`/bots#${t.slug}`}>{t.name}</a></h3><p class="card-sub">{t.category}</p></div></div>
+          <p style="margin:0;color:var(--muted);font-size:0.93rem">{t.desc}</p>
+          <ul class="flow">{t.members.map((m) => <li>{bots.find((b) => b.slug === m)?.name.replace(/^Bot /, '')}</li>)}</ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head">
+        <div><p class="eyebrow">Sách prompting</p><h2>Học viết prompt trong {counts.chapters} chương ngắn</h2></div>
+        <a class="btn btn-ghost" href="/sach">Đọc sách</a>
+      </div>
+      <ol class="grid" style="list-style:none">
+        {books.map((b) => (
+          <li class="card">
+            <p class="card-sub" style="margin:0">Chương {b.number}</p>
+            <h3><a href={`/sach/${b.slug}`}>{b.title}</a></h3>
+            <p style="margin:0;color:var(--muted);font-size:0.93rem">{b.desc}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="band">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;align-items:center">
+        <div>
+          <h2>Cần bộ skill viết riêng cho doanh nghiệp?</h2>
+          <p class="muted" style="margin:0">Gói Pro gồm các bộ skill chuyên sâu theo nghiệp vụ Việt Nam. Hoặc để chúng tôi cài skill và workflow cho cả đội của bạn.</p>
         </div>
-        <div class="tier">
-          <h3>Gói Pro</h3>
-          <p class="muted">Bộ skill tự viết cho nghiệp vụ Việt Nam: content bán hàng, Excel tiếng Việt, workflow Zalo, SePay. Cập nhật hằng tháng. Từ {vnd(cheapest)}.</p>
-          <p><a href="/pro">Xem gói Pro</a></p>
-        </div>
-        <div class="tier">
-          <h3>Cài đặt cho doanh nghiệp</h3>
-          <p class="muted">Chúng tôi cài, cấu hình và hướng dẫn cho đội bạn, hoặc viết skill theo đúng quy trình của công ty.</p>
-          <p><a href="/dich-vu">Đặt lịch tư vấn</a></p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <a class="btn btn-primary" href="/pro">Xem Gói Pro</a>
+          <a class="btn btn-ghost" href="/dich-vu">Dịch vụ cài đặt</a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <section class="wrap section" style="padding-top:8px">
+    <div class="detail detail-form" style="padding-bottom:0">
+      <div class="measure">
+        <h2>Câu hỏi thường gặp</h2>
+        {faq.map(([q, a]) => (<><h3 style="margin-top:20px">{q}</h3><p class="muted">{a}</p></>))}
+        <p><a href="/huong-dan">Xem hướng dẫn cài skill chi tiết</a></p>
+      </div>
+      <div id="gop-skill"><GopSkill /></div>
     </div>
   </section>
 </Base>

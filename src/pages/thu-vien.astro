@@ -1,16 +1,27 @@
 ---
 import Base from '../layouts/Base.astro';
 import Library from '../components/Library.astro';
-import { counts, scanDate, items, breadcrumb, itemListLd } from '../lib/library.js';
-const [y, m, d] = scanDate.split('-');
+import GopSkill from '../components/GopSkill.astro';
+import { skills, counts, breadcrumb, itemListLd } from '../lib/site.js';
 ---
-<Base title="Thư viện Claude Skill, Agent Skills và workflow n8n" description={`${counts.total} Claude skill, agent skill và kho workflow n8n tuyển chọn, mô tả tiếng Việt, lệnh cài sẵn, quét an toàn ngày ${d}/${m}/${y}.`} jsonLd={[breadcrumb([['Trang chủ', '/'], ['Thư viện', '/thu-vien']]), itemListLd(items, 'Thư viện skills.vn')]}>
-  <section class="hero wrap" style="padding-top:40px">
-    <h1 style="font-size:clamp(1.9rem,4vw,2.8rem)">Thư viện Claude Skill và workflow n8n</h1>
-    <p class="lead">{counts.total} skill, bộ agent skill và kho workflow n8n, quét an toàn lần gần nhất ngày {d}/{m}/{y}. Mục tiếng Việt xếp trước.</p>
-    <Library autofocus />
+<Base
+  title={`Thư viện ${counts.skills} Claude Skill & prompt tiếng Việt`}
+  description={`Tìm trong ${counts.skills} Claude Skill và ${counts.prompts} prompt mẫu tiếng Việt, lọc theo ${counts.categories} ngành. Chép prompt hoặc tải SKILL.md miễn phí, lưu skill yêu thích.`}
+  jsonLd={[breadcrumb([['Trang chủ', '/'], ['Thư viện', '/thu-vien']]), itemListLd(skills, 'Thư viện Claude Skill tiếng Việt')]}
+>
+  <section class="wrap" style="padding-top:36px">
+    <h1 style="font-size:clamp(1.9rem,4.5vw,3rem)">Thư viện Claude Skill & prompt tiếng Việt</h1>
+    <p class="lead">{counts.skills} skill, {counts.prompts} prompt mẫu, {counts.categories} ngành nghề. Gõ việc bạn cần làm, lọc theo ngành, bấm tim để lưu skill hay dùng.</p>
+    <Library />
   </section>
-  <section class="wrap" style="padding:24px 20px 64px">
-    <p class="muted measure">Bạn viết skill tiếng Việt và muốn được giới thiệu ở đây? Gửi link repo qua <a href="/dich-vu#lien-he">form liên hệ</a>. Chúng tôi chỉ nhận repo công khai, có giấy phép rõ ràng.</p>
+  <section class="wrap section" id="gop-skill">
+    <div class="detail detail-form" style="padding-bottom:0">
+      <div class="measure">
+        <h2>Chưa thấy skill bạn cần?</h2>
+        <p class="muted">Gửi mô tả việc bạn muốn AI làm. Chúng tôi viết thêm skill mới mỗi tuần, ưu tiên những việc được nhiều người hỏi.</p>
+        <p class="muted">Cần skill riêng theo quy trình công ty? Xem <a href="/dich-vu">dịch vụ viết skill riêng</a>.</p>
+      </div>
+      <GopSkill />
+    </div>
   </section>
 </Base>

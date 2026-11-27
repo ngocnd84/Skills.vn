@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import products from '../data/products.json';
-import { breadcrumb } from '../lib/library.js';
+import { breadcrumb } from '../lib/site.js';
 const serviceLd = products.services.map((x) => ({ '@context': 'https://schema.org', '@type': 'Service', name: x.name, description: x.summary, areaServed: 'VN', provider: { '@type': 'Organization', name: 'skills.vn', url: 'https://skills.vn' } }));
 ---
 <Base jsonLd={[...serviceLd, breadcrumb([['Trang chủ', '/'], ['Dịch vụ', '/dich-vu']])]} title="Cài Claude Skill và n8n cho doanh nghiệp" description="Cài đặt, cấu hình skill AI và workflow n8n cho đội nhóm, viết skill riêng theo quy trình công ty, workshop thực hành.">

@@ -1,0 +1,54 @@
+---
+import Base from '../../layouts/Base.astro';
+import SkillCard from '../../components/SkillCard.astro';
+import BotCard from '../../components/BotCard.astro';
+import { categories, skillsIn, botsIn, teams, breadcrumb, itemListLd, faqLd, fitTitle } from '../../lib/site.js';
+
+export function getStaticPaths() {
+  return categories.map((c) => ({ params: { slug: c.slug }, props: { c } }));
+}
+const { c } = Astro.props;
+const list = skillsIn(c.slug);
+const relBots = botsIn(c.slug);
+const relTeams = teams.filter((t) => t.categorySlug === c.slug);
+const others = categories.filter((x) => x.slug !== c.slug);
+const faq = [
+  [`Có những skill AI nào cho ngành ${c.name}?`, `${list.map((s) => s.name).join(', ')}.`],
+  ['Các skill này có miễn phí không?', 'Có. Bạn tải SKILL.md hoặc chép prompt mẫu miễn phí, dùng được với Claude, Claude Code, ChatGPT và Gemini.'],
+];
+---
+<Base
+  title={fitTitle(`${c.title}: ${list.length} skill & prompt`, c.title)}
+  description={`${c.intro} Tải SKILL.md hoặc chép prompt miễn phí.`.slice(0, 160)}
+  jsonLd={[breadcrumb([['Trang chủ', '/'], ['Ngành nghề', '/nganh'], [c.name, `/nganh/${c.slug}`]]), itemListLd(list, c.title), faqLd(faq)]}
+>
+  <div class="wrap">
+    <nav class="crumbs" aria-label="Đường dẫn"><a href="/">Trang chủ</a> / <a href="/nganh">Ngành nghề</a> / {c.name}</nav>
+    <h1 style="font-size:clamp(1.9rem,4.5vw,3rem)">{c.title}</h1>
+    <p class="lead">{c.intro}</p>
+    {c.note && <p class="notice measure">{c.note}</p>}
+    <ul class="grid">{list.map((s) => <SkillCard skill={s} heading="h2" />)}</ul>
+  </div>
+
+  {(relBots.length > 0 || relTeams.length > 0) && (
+    <section class="wrap section">
+      <h2>Mẫu bot cho ngành {c.name}</h2>
+      <ul class="grid">{relBots.map((b) => <BotCard bot={b} />)}</ul>
+      {relTeams.map((t) => <p style="margin-top:16px">Muốn chạy cả quy trình? Xem <a href={`/bots#${t.slug}`}>{t.name}</a>: {t.desc}</p>)}
+    </section>
+  )}
+
+  <section class="wrap section" style="padding-top:8px">
+    <div class="measure">
+      <h2>Câu hỏi thường gặp</h2>
+      {faq.map(([q, a]) => (<><h3>{q}</h3><p class="muted">{a}</p></>))}
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2>Ngành khác</h2>
+      <div class="chips wrap-chips">{others.map((o) => <a class="chip" href={`/nganh/${o.slug}`}>{o.name}</a>)}</div>
+    </div>
+  </section>
+</Base>

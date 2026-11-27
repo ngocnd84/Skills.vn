@@ -1,65 +1,194 @@
 [
   {
-    "id": "tieng-viet",
-    "name": "Viết bằng tiếng Việt",
-    "title": "Bộ Claude Skill tiếng Việt miễn phí",
-    "h1": "Skill tiếng Việt cho Claude và các AI agent",
-    "intro": "Các bộ skill do người Việt viết hoặc Việt hoá: marketing bán hàng qua Zalo, sàn TMĐT, SEO tiếng Việt, văn bản kinh doanh đúng xưng hô. Cài được trên Claude, Claude Code, Codex và các agent đọc chuẩn SKILL.md."
-  },
-  {
-    "id": "van-phong",
-    "name": "Văn phòng & tài liệu",
-    "title": "Skill Claude cho Word, Excel, PowerPoint, PDF",
-    "h1": "Skill văn phòng: Word, Excel, PowerPoint, PDF",
-    "intro": "Skill giúp AI làm việc với file văn phòng thật: soạn hợp đồng Word, dựng bảng tính Excel có công thức, làm slide, trích và gộp PDF, viết thông báo nội bộ."
-  },
-  {
-    "id": "marketing",
-    "name": "Marketing & bán hàng",
-    "title": "Skill Claude cho marketing, SEO và bán hàng",
-    "h1": "Skill marketing, SEO và bán hàng",
-    "intro": "Skill để AI lập kế hoạch marketing, nghiên cứu từ khoá, viết bài SEO, phân tích đối thủ và soạn kịch bản bán hàng, trong đó có các bộ viết riêng cho thị trường Việt Nam."
-  },
-  {
-    "id": "noi-dung",
     "name": "Viết nội dung",
-    "title": "Skill viết content tiếng Việt cho Claude",
-    "h1": "Skill viết nội dung",
-    "intro": "Skill giúp AI viết tiếng Việt tự nhiên như người làm nghề: landing page, email bán hàng, tin Zalo, tài liệu kỹ thuật, văn bản tài chính."
+    "slug": "viet-noi-dung",
+    "emoji": "✍️",
+    "title": "Skill AI viết nội dung tiếng Việt",
+    "intro": "Caption bán hàng, bài SEO, PR báo chí, email chăm sóc khách: các skill giúp AI viết đúng giọng thương hiệu và đúng người đọc Việt.",
+    "note": ""
   },
   {
-    "id": "thiet-ke",
-    "name": "Thiết kế",
-    "title": "Skill thiết kế giao diện, poster cho AI",
-    "h1": "Skill thiết kế",
-    "intro": "Skill giúp AI thiết kế giao diện web có cá tính, làm poster, áp bộ nhận diện thương hiệu và rà lỗi giao diện trước khi giao."
-  },
-  {
-    "id": "lap-trinh",
     "name": "Lập trình",
-    "title": "Claude Code Skill cho lập trình viên",
-    "h1": "Claude Code skill cho lập trình",
-    "intro": "Skill cho Claude Code, Codex, Cursor: quy trình TDD, gỡ lỗi có hệ thống, tối ưu React, xây MCP server, kiểm thử web app tự động."
+    "slug": "lap-trinh",
+    "emoji": "🧑‍💻",
+    "title": "Skill AI cho lập trình viên",
+    "intro": "Review code, viết test, tạo bot Telegram/Zalo, tối ưu prompt và viết SKILL.md cho Claude Code: quy trình lập trình có kiểm chứng thay vì code theo cảm hứng.",
+    "note": ""
   },
   {
-    "id": "nghien-cuu",
-    "name": "Nghiên cứu & dữ liệu web",
-    "title": "Skill cho AI duyệt web và cào dữ liệu",
-    "h1": "Skill nghiên cứu và dữ liệu web",
-    "intro": "Skill cho AI điều khiển trình duyệt, lấy dữ liệu sạch từ website và nghiên cứu sâu nhiều nguồn."
+    "name": "Marketing & Bán hàng",
+    "slug": "marketing-ban-hang",
+    "emoji": "📣",
+    "title": "Skill AI cho marketing và bán hàng",
+    "intro": "Landing page chuyển đổi, email marketing, kế hoạch content 30 ngày, kịch bản telesales và mô hình mua chung cho đội bán hàng Việt.",
+    "note": ""
   },
   {
-    "id": "agent",
-    "name": "Xây agent & skill",
-    "title": "Agent Skills: công cụ viết skill và xây AI agent",
-    "h1": "Xây agent và tự viết skill",
-    "intro": "Dành cho người muốn tự đóng gói quy trình thành skill hoặc xây hệ thống AI agent: công cụ tạo skill, tìm skill, kỹ thuật quản lý ngữ cảnh."
+    "name": "Kinh doanh & Khởi nghiệp",
+    "slug": "kinh-doanh-khoi-nghiep",
+    "emoji": "🚀",
+    "title": "Skill AI cho chủ doanh nghiệp và startup",
+    "intro": "Viết PRD bàn giao dev, slide gọi vốn, research đối thủ, Business Model Canvas và chiến lược giá: từ ý tưởng đến kế hoạch có số liệu.",
+    "note": ""
   },
   {
-    "id": "tu-dong-hoa",
-    "name": "Workflow n8n",
-    "title": "Workflow n8n mẫu miễn phí, template n8n",
-    "h1": "Workflow n8n mẫu",
-    "intro": "Các kho workflow n8n mã nguồn mở lớn nhất, phân loại theo dịch vụ và tình huống. Tải file JSON, import vào n8n là chạy, kèm hướng dẫn tiếng Việt."
+    "name": "Tài chính - Kế toán",
+    "slug": "tai-chinh-ke-toan",
+    "emoji": "🧾",
+    "title": "Skill AI cho tài chính, kế toán",
+    "intro": "Kê khai thuế, đọc báo cáo tài chính, lập ngân sách, dòng tiền và unit economics cho hộ kinh doanh và doanh nghiệp nhỏ.",
+    "note": "Kết quả chỉ để tham khảo, không phải tư vấn đầu tư hay tư vấn thuế chính thức. Đối chiếu với kế toán hoặc cơ quan thuế trước khi nộp."
+  },
+  {
+    "name": "Pháp lý - Luật",
+    "slug": "phap-ly-luat",
+    "emoji": "⚖️",
+    "title": "Skill AI soạn hợp đồng và văn bản pháp lý",
+    "intro": "Hợp đồng thuê nhà, hợp đồng lao động, rà soát điều khoản và thủ tục thành lập công ty theo bối cảnh Việt Nam.",
+    "note": "Văn bản AI soạn chỉ là bản nháp tham khảo. Hãy nhờ luật sư rà soát trước khi ký."
+  },
+  {
+    "name": "Y tế - Dược",
+    "slug": "y-te-duoc",
+    "emoji": "🩺",
+    "title": "Skill AI về sức khỏe, y tế",
+    "intro": "Hướng dẫn hỏi triệu chứng, dùng thuốc an toàn, chế độ ăn cho người tiểu đường, sơ cứu và theo dõi sức khỏe người cao tuổi.",
+    "note": "Nội dung chỉ để tham khảo, không thay thế chẩn đoán hay đơn thuốc của bác sĩ. Trường hợp khẩn cấp, gọi 115."
+  },
+  {
+    "name": "Giáo dục - Đào tạo",
+    "slug": "giao-duc-dao-tao",
+    "emoji": "📚",
+    "title": "Skill AI cho giáo viên và người học",
+    "intro": "Giáo án STEM, gia sư Toán và Tiếng Anh, tạo đề thi trắc nghiệm, dịch chuyên ngành và tóm tắt tài liệu dài.",
+    "note": ""
+  },
+  {
+    "name": "Bất động sản",
+    "slug": "bat-dong-san",
+    "emoji": "🏠",
+    "title": "Skill AI cho môi giới bất động sản",
+    "intro": "Đăng tin chốt deal, định giá theo 3 phương pháp, kịch bản dẫn khách, tư vấn mua nhà lần đầu và quản lý nhà cho thuê.",
+    "note": ""
+  },
+  {
+    "name": "Du lịch - Khách sạn",
+    "slug": "du-lich-khach-san",
+    "emoji": "🗺️",
+    "title": "Skill AI cho du lịch, khách sạn",
+    "intro": "Lịch trình tour 3N2Đ, tư vấn tour theo ngân sách, mô tả phòng khách sạn, kịch bản hướng dẫn viên và trả lời đánh giá.",
+    "note": ""
+  },
+  {
+    "name": "F&B - Nhà hàng - Cafe",
+    "slug": "fnb-nha-hang-cafe",
+    "emoji": "🍜",
+    "title": "Skill AI cho nhà hàng, quán cafe",
+    "intro": "Tính food cost, lên menu theo mùa, viết mô tả món bán chạy, quản lý kho nguyên liệu và kịch bản phục vụ khách.",
+    "note": ""
+  },
+  {
+    "name": "Thời trang - Làm đẹp",
+    "slug": "thoi-trang-lam-dep",
+    "emoji": "👗",
+    "title": "Skill AI cho thời trang, làm đẹp",
+    "intro": "Phối đồ theo dáng, mô tả sản phẩm thời trang, tư vấn skincare theo loại da, lên bộ sưu tập và review mỹ phẩm trung thực.",
+    "note": ""
+  },
+  {
+    "name": "Thương mại điện tử",
+    "slug": "thuong-mai-dien-tu",
+    "emoji": "🛒",
+    "title": "Skill AI bán hàng trên Shopee, TikTok Shop",
+    "intro": "Tối ưu gian hàng Shopee và TikTok Shop, chiến lược flash sale, trả lời đánh giá 1 sao và phân tích đối thủ trên sàn.",
+    "note": ""
+  },
+  {
+    "name": "Logistics - Vận tải",
+    "slug": "logistics-van-tai",
+    "emoji": "🚚",
+    "title": "Skill AI cho logistics, vận tải",
+    "intro": "Tính cước vận chuyển, điều phối xe sân bay, tối ưu tuyến giao hàng, quản lý kho và xử lý đơn hoàn, thất lạc.",
+    "note": ""
+  },
+  {
+    "name": "Nhân sự - Tuyển dụng",
+    "slug": "nhan-su-tuyen-dung",
+    "emoji": "👥",
+    "title": "Skill AI cho nhân sự, tuyển dụng",
+    "intro": "Viết JD và câu hỏi phỏng vấn, onboarding 7-30-90 ngày, đánh giá KPI, thang lương và giữ chân nhân tài.",
+    "note": ""
+  },
+  {
+    "name": "Nông nghiệp",
+    "slug": "nong-nghiep",
+    "emoji": "🌾",
+    "title": "Skill AI cho nông nghiệp",
+    "intro": "Trồng rau thủy canh, lịch chăm cây ăn trái, chẩn đoán bệnh cây, tính giá bán nông sản và kế hoạch mùa vụ.",
+    "note": ""
+  },
+  {
+    "name": "Xây dựng - Nội thất",
+    "slug": "xay-dung-noi-that",
+    "emoji": "🏗️",
+    "title": "Skill AI cho xây dựng, nội thất",
+    "intro": "Dự toán xây nhà theo m2, thiết kế phòng nhỏ, kiểm tra tiến độ thi công, báo giá cải tạo và chọn vật liệu.",
+    "note": ""
+  },
+  {
+    "name": "Sản xuất",
+    "slug": "san-xuat",
+    "emoji": "🏭",
+    "title": "Skill AI cho nhà máy, sản xuất",
+    "intro": "QC sản xuất, lập kế hoạch theo đơn hàng, quản lý tồn kho nguyên liệu, giảm phế phẩm bằng 5 Why và bảo trì máy.",
+    "note": ""
+  },
+  {
+    "name": "Ô tô - Xe máy",
+    "slug": "o-to-xe-may",
+    "emoji": "🚗",
+    "title": "Skill AI về ô tô, xe máy",
+    "intro": "Định giá xe cũ, tư vấn mua xe lần đầu, lịch bảo dưỡng theo km, checklist kiểm tra xe cũ và so sánh xe theo nhu cầu.",
+    "note": ""
+  },
+  {
+    "name": "Bảo hiểm - Ngân hàng",
+    "slug": "bao-hiem-ngan-hang",
+    "emoji": "🏦",
+    "title": "Skill AI về bảo hiểm, ngân hàng",
+    "intro": "So sánh gói vay mua nhà, chọn thẻ tín dụng, giải thích hợp đồng bảo hiểm và lập kế hoạch tiết kiệm, hưu trí.",
+    "note": "Kết quả chỉ để tham khảo. Đọc kỹ điều khoản gốc và hỏi ngân hàng hoặc công ty bảo hiểm trước khi ký."
+  },
+  {
+    "name": "Game - Giải trí",
+    "slug": "game-giai-tri",
+    "emoji": "🎮",
+    "title": "Skill AI cho game, giải trí",
+    "intro": "Kịch bản game, cốt truyện nhân vật, thiết kế nhiệm vụ và cân bằng, script review game và tổ chức giải đấu mini.",
+    "note": ""
+  },
+  {
+    "name": "Hành chính - Công vụ",
+    "slug": "hanh-chinh-cong-vu",
+    "emoji": "📄",
+    "title": "Skill AI soạn văn bản hành chính",
+    "intro": "Công văn đúng thể thức, báo cáo tháng, tờ trình đề xuất, trả lời văn bản và quản lý hồ sơ lưu trữ.",
+    "note": ""
+  },
+  {
+    "name": "Video & Sáng tạo",
+    "slug": "video-sang-tao",
+    "emoji": "🎬",
+    "title": "Skill AI viết kịch bản video, TikTok",
+    "intro": "Kịch bản TikTok/Reels, script YouTube, prompt ảnh Midjourney, kịch bản podcast và storyboard quảng cáo.",
+    "note": ""
+  },
+  {
+    "name": "Dữ liệu & Phân tích",
+    "slug": "du-lieu-phan-tich",
+    "emoji": "📊",
+    "title": "Skill AI phân tích dữ liệu, Excel",
+    "intro": "Phân tích Excel, dashboard báo cáo, làm sạch dữ liệu, phân tích hành vi khách hàng và dự báo doanh số.",
+    "note": ""
   }
 ]

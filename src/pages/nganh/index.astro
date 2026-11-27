@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import { categories, skillsIn, counts, breadcrumb, itemListLd } from '../../lib/site.js';
+---
+<Base
+  title={`Skill AI theo ${counts.categories} ngành nghề`}
+  description={`Claude Skill và prompt tiếng Việt chia theo ${counts.categories} ngành: bất động sản, F&B, thương mại điện tử, kế toán, pháp lý, giáo dục, logistics và nhiều ngành khác.`}
+  jsonLd={[breadcrumb([['Trang chủ', '/'], ['Ngành nghề', '/nganh']]), itemListLd(categories, 'Ngành nghề', '/nganh/')]}
+>
+  <section class="wrap" style="padding:36px 20px 64px">
+    <h1 style="font-size:clamp(1.9rem,4.5vw,3rem)">Skill AI theo ngành nghề</h1>
+    <p class="lead">Mỗi ngành có 5 skill và 5 prompt mẫu viết cho công việc thật ở Việt Nam.</p>
+    <ul class="grid">
+      {categories.map((c) => {
+        const list = skillsIn(c.slug);
+        return (
+          <li class="card">
+            <div class="card-head"><span class="emoji" aria-hidden="true">{c.emoji}</span><div><h2 style="font-size:1.05rem;margin:0"><a href={`/nganh/${c.slug}`} style="color:var(--ink);text-decoration:none">{c.name}</a></h2><p class="card-sub">{list.length} skill</p></div></div>
+            <p style="margin:0;color:var(--muted);font-size:0.93rem">{c.intro}</p>
+            <ul style="margin:0;padding-left:18px;font-size:0.9rem">{list.map((s) => <li><a href={`/skill/${s.slug}`} style="position:relative;z-index:1">{s.name}</a></li>)}</ul>
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+</Base>

@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import { books, breadcrumb, SITE, PUBLISHED } from '../../lib/site.js';
+export function getStaticPaths() {
+  return books.map((b, i) => ({ params: { slug: b.slug }, props: { b, prev: books[i - 1], next: books[i + 1] } }));
+}
+const { b, prev, next } = Astro.props;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: b.title,
+  description: b.desc,
+  inLanguage: 'vi',
+  datePublished: PUBLISHED,
+  url: `${SITE}/sach/${b.slug}`,
+  author: { '@type': 'Organization', name: 'skills.vn', url: SITE },
+  publisher: { '@type': 'Organization', name: 'skills.vn', url: SITE },
+  isPartOf: { '@type': 'Book', name: 'Sách Prompting tiếng Việt', url: `${SITE}/sach` },
+};
+---
+<Base
+  title={`Chương ${b.number}: ${b.title}`}
+  description={`${b.desc} Chương ${b.number} sách prompting tiếng Việt miễn phí.`.slice(0, 160)}
+  ogType="article"
+  jsonLd={[ld, breadcrumb([['Trang chủ', '/'], ['Sách prompting', '/sach'], [b.title, `/sach/${b.slug}`]])]}
+>
+  <article class="wrap prose measure chapter">
+    <nav class="crumbs" aria-label="Đường dẫn" style="margin-top:0"><a href="/">Trang chủ</a> / <a href="/sach">Sách prompting</a> / Chương {b.number}</nav>
+    <p class="eyebrow">Chương {b.number} / {books.length}</p>
+    <h1 style="font-size:clamp(1.9rem,4.5vw,2.8rem)">{b.title}</h1>
+    <p class="lead">{b.desc}</p>
+    {b.paras.map((p) => <p>{p}</p>)}
+    <p class="muted">Áp dụng ngay: chọn một skill trong <a href="/thu-vien">thư viện</a> và thử viết lại prompt mẫu theo cách ở chương này.</p>
+    <nav class="pager" aria-label="Chương">
+      {prev ? <a class="btn btn-ghost" href={`/sach/${prev.slug}`}>← {prev.title}</a> : <span />}
+      {next ? <a class="btn btn-primary" href={`/sach/${next.slug}`}>{next.title} →</a> : <a class="btn btn-primary" href="/thu-vien">Vào thư viện skill</a>}
+    </nav>
+  </article>
+</Base>

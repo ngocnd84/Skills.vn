@@ -2,9 +2,7 @@
 import Base from '../layouts/Base.astro';
 import OrderDialog from '../components/OrderDialog.astro';
 import products from '../data/products.json';
-import platforms from '../data/platforms.json';
-import { vnd } from '../lib/library.js';
-import { breadcrumb } from '../lib/library.js';
+import { vnd, breadcrumb, PLATFORMS as platforms } from '../lib/site.js';
 const STATUS = { 'dang-ban': 'Đang bán', 'sap-ra': 'Sắp ra mắt' };
 const faq = [
   ['Tôi nhận skill bằng cách nào?', 'Sau khi chuyển khoản, hệ thống tự xác nhận trong vài giây. Chúng tôi gửi file skill và hướng dẫn cài qua email trong giờ làm việc, thường trong 30 phút. Thành viên Pro được mời vào nhóm Zalo hỗ trợ.'],

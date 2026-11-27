@@ -1,62 +1,104 @@
 ---
-// Danh sách thư viện. Chỉ render sẵn các mục thuộc trang hiện tại (để Google đọc được),
-// ô tìm kiếm lọc ngay trên các mục đó. Trang chủ gửi từ khoá sang /thu-vien.
-import Row from './Row.astro';
-import { items, categories } from '../lib/library.js';
-const { only = null, featuredOnly = false, autofocus = false } = Astro.props;
-const inCat = (i) => !only || (only === 'tieng-viet' ? i.lang === 'vi' : i.category === only);
-const list = items
-  .filter((i) => inCat(i) && (!featuredOnly || i.featured))
-  .sort((a, b) => (b.lang === 'vi') - (a.lang === 'vi') || (b.featured - a.featured) || a.name.localeCompare(b.name, 'vi'));
-const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/') || '/';
+import SkillCard from './SkillCard.astro';
+import { skills, categories, fold } from '../lib/site.js';
+const PAGE = 24;
 ---
-<div class="library">
-  <form class="search" role="search" action="/thu-vien" method="get" data-live={featuredOnly ? '0' : '1'}>
-    <label class="sr-only" for="q">Tìm skill</label>
+<div id="library">
+  <form class="search" role="search" action="/thu-vien" onsubmit="return false" style="margin-top:20px">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-    <input id="q" name="q" type="search" placeholder="Tìm: viết content, Excel, Zalo, SEO, n8n…" autocomplete="off" autofocus={autofocus} />
+    <label class="sr-only" for="lib-q">Tìm skill hoặc prompt</label>
+    <input id="lib-q" name="q" type="search" autocomplete="off" placeholder="Tìm: thuế, BĐS, hợp đồng, menu, Shopee, giáo án..." />
   </form>
-  <nav aria-label="Nhóm skill">
-    <ul class="chips">
-      <li><a class="chip" href="/thu-vien" aria-current={path === '/thu-vien' ? 'page' : undefined}>Tất cả</a></li>
-      {categories.map((c) => (
-        <li><a class="chip" href={`/thu-vien/${c.id}`} aria-current={path === `/thu-vien/${c.id}` ? 'page' : undefined}>{c.name}</a></li>
-      ))}
-    </ul>
-  </nav>
-  <p class="result-meta" aria-live="polite">
-    {featuredOnly ? <>{list.length} mục nổi bật trong {items.length} mục. <a href="/thu-vien">Xem cả thư viện</a></> : `${list.length} mục`}
-  </p>
-  <ul class="rows">
-    {list.map((item) => <Row item={item} />)}
-    <li class="empty" hidden>Không có mục nào khớp. Thử từ khác, xem <a href="/thu-vien">cả thư viện</a>, hoặc <a href="/dich-vu">nhờ chúng tôi viết skill riêng</a>.</li>
+
+  <div class="chips" role="group" aria-label="Lọc theo ngành">
+    <button type="button" class="chip" data-cat="" aria-pressed="true">Tất cả</button>
+    {categories.map((c) => <button type="button" class="chip" data-cat={c.slug} aria-pressed="false">{c.name}</button>)}
+  </div>
+
+  <div class="toolbar">
+    <div class="chips" role="tablist" aria-label="Loại nội dung" style="margin:0">
+      <button type="button" class="chip" role="tab" data-tab="skills" aria-pressed="true" aria-selected="true">Skills</button>
+      <button type="button" class="chip" role="tab" data-tab="prompts" aria-pressed="false" aria-selected="false">Prompts</button>
+      <button type="button" class="chip" data-favonly aria-pressed="false">♥ Đã lưu</button>
+    </div>
+    <p class="result-meta" id="lib-count" aria-live="polite" style="margin:0"></p>
+  </div>
+
+  <ul class="grid" id="lib-skills">
+    {skills.map((s) => <SkillCard skill={s} heading="h2" />)}
   </ul>
+
+  <ul class="grid" id="lib-prompts" hidden>
+    {skills.map((s) => (
+      <li class="card prompt-card" data-search={fold([s.name, s.category, s.subcategory, s.prompt, ...s.tags].join(' '))} data-cat={s.categorySlug} data-slug={s.slug}>
+        <div class="card-head">
+          <span class="emoji" aria-hidden="true">{s.emoji}</span>
+          <div>
+            <h2 style="font-size:1rem;margin:0"><a href={`/skill/${s.slug}#prompt`} style="color:var(--ink);text-decoration:none">Prompt: {s.name}</a></h2>
+            <p class="card-sub">{s.category}</p>
+          </div>
+        </div>
+        <pre>{s.prompt}</pre>
+        <div class="card-actions">
+          <button class="btn btn-ghost btn-sm" data-copy={s.prompt} data-copy-msg="Đã chép prompt">Chép prompt</button>
+          <button class="fav" data-fav={s.slug} aria-pressed="false" aria-label={`Lưu ${s.name}`} style="margin-left:auto">♡</button>
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <p class="empty" id="lib-empty" hidden>Chưa có skill khớp. Thử từ khoá khác, hoặc <a href="#gop-skill">gửi yêu cầu skill</a> cho chúng tôi.</p>
+  <p style="text-align:center;margin-top:24px"><button class="btn btn-ghost" id="lib-more" type="button">Xem thêm</button></p>
 </div>
-<script>
-  for (const form of document.querySelectorAll('.library .search[data-live="1"]')) {
-    const root = form.closest('.library');
-    const input = form.querySelector('input');
-    const rows = [...root.querySelectorAll('.row')];
-    const meta = root.querySelector('.result-meta');
-    const empty = root.querySelector('.empty');
-    const total = rows.length;
-    const norm = (s) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').toLowerCase();
-    rows.forEach((r) => (r.dataset.norm = norm(r.dataset.search)));
-    form.addEventListener('submit', (e) => e.preventDefault());
-    function apply() {
-      const q = norm(input.value.trim());
-      let shown = 0;
-      for (const r of rows) {
-        const show = !q || q.split(/\s+/).every((w) => r.dataset.norm.includes(w));
-        r.hidden = !show;
-        if (show) shown++;
-      }
-      empty.hidden = shown > 0;
-      meta.textContent = q ? `${shown} kết quả cho “${input.value.trim()}”` : `${total} mục`;
+
+<script define:vars={{ PAGE }}>
+  const fold = (s) => s.toLowerCase().replace(/đ/g, 'd').normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const q = document.getElementById('lib-q');
+  const lists = { skills: document.getElementById('lib-skills'), prompts: document.getElementById('lib-prompts') };
+  const count = document.getElementById('lib-count');
+  const empty = document.getElementById('lib-empty');
+  const more = document.getElementById('lib-more');
+  const catBtns = [...document.querySelectorAll('#library [data-cat]')].filter((b) => b.tagName === 'BUTTON');
+  const tabBtns = [...document.querySelectorAll('#library [data-tab]')];
+  const favBtn = document.querySelector('#library [data-favonly]');
+  const params = new URLSearchParams(location.search);
+  const state = { q: params.get('q') || '', cat: params.get('nganh') || '', tab: 'skills', fav: false, limit: PAGE };
+  q.value = state.q;
+  const readFav = () => { try { return JSON.parse(localStorage.getItem('skillsvn:fav') || '[]'); } catch { return []; } };
+
+  function render() {
+    const words = fold(state.q).split(/\s+/).filter(Boolean);
+    const fav = readFav();
+    Object.entries(lists).forEach(([k, ul]) => (ul.hidden = k !== state.tab));
+    const items = [...lists[state.tab].children];
+    let shown = 0, matched = 0;
+    for (const li of items) {
+      const ok = (!state.cat || li.dataset.cat === state.cat)
+        && (!state.fav || fav.includes(li.dataset.slug))
+        && words.every((w) => li.dataset.search.includes(w));
+      if (ok) matched++;
+      const visible = ok && shown < state.limit;
+      if (visible) shown++;
+      li.hidden = !visible;
     }
-    const q = new URLSearchParams(location.search).get('q');
-    if (q) input.value = q;
-    input.addEventListener('input', apply);
-    apply();
+    count.textContent = `${matched} ${state.tab === 'skills' ? 'skill' : 'prompt'}`;
+    empty.hidden = matched > 0;
+    more.hidden = matched <= state.limit;
+    catBtns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.cat === state.cat)));
+    tabBtns.forEach((b) => { const on = b.dataset.tab === state.tab; b.setAttribute('aria-pressed', String(on)); b.setAttribute('aria-selected', String(on)); });
+    favBtn.setAttribute('aria-pressed', String(state.fav));
   }
+  function syncUrl() {
+    const p = new URLSearchParams();
+    if (state.q) p.set('q', state.q);
+    if (state.cat) p.set('nganh', state.cat);
+    history.replaceState(null, '', p.toString() ? `?${p}` : location.pathname);
+  }
+  q.addEventListener('input', () => { state.q = q.value; state.limit = PAGE; render(); syncUrl(); });
+  catBtns.forEach((b) => b.addEventListener('click', () => { state.cat = b.dataset.cat; state.limit = PAGE; render(); syncUrl(); }));
+  tabBtns.forEach((b) => b.addEventListener('click', () => { state.tab = b.dataset.tab; state.limit = PAGE; render(); }));
+  favBtn.addEventListener('click', () => { state.fav = !state.fav; render(); });
+  more.addEventListener('click', () => { state.limit += PAGE; render(); });
+  document.addEventListener('fav-change', () => state.fav && render());
+  render();
 </script>

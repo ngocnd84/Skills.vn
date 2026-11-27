@@ -1,0 +1,15 @@
+---
+import { botBySlug } from '../lib/site.js';
+const { bot: b } = Astro.props;
+---
+<li class="card" id={b.slug}>
+  <div class="card-head">
+    <span class="emoji" aria-hidden="true">{b.emoji}</span>
+    <div>
+      <h3>{b.name}</h3>
+      <p class="card-sub">{b.categorySlug ? <a href={`/nganh/${b.categorySlug}`}>{b.category}</a> : b.category} · lệnh gợi ý <code>{b.cmd}</code></p>
+    </div>
+  </div>
+  <p style="margin:0;color:var(--muted);font-size:0.93rem">{b.desc}</p>
+  <p class="card-sub" style="margin:0">Hay dùng cùng: {b.together.map((t, i) => <>{i > 0 && ', '}<a href={`/bots#${t}`}>{botBySlug[t]?.name}</a></>)}</p>
+</li>

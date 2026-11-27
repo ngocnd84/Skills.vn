@@ -1,32 +1,34 @@
 ---
 import site from '../data/site.json';
-import categories from '../data/categories.json';
+import { categories } from '../lib/site.js';
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
   <div class="wrap">
     <div>
-      <p style="margin:0 0 4px"><strong style="color:var(--ink)">skills.vn</strong>{site.company && <> — vận hành bởi {site.company}</>}</p>
-      {site.taxCode && <p style="margin:0">MST: {site.taxCode}</p>}
-      {site.address && <p style="margin:0">{site.address}</p>}
-      {(site.email || site.hotline || site.zalo) && (
-        <p style="margin:0">
-          {site.email && <a href={`mailto:${site.email}`}>{site.email}</a>}
-          {site.hotline && <> &nbsp; Hotline {site.hotline}</>}
-          {site.zalo && <> &nbsp; <a href={`https://zalo.me/${site.zalo}`}>Zalo</a></>}
-        </p>
-      )}
-      <p style="margin:8px 0 0">© {year}. Skill miễn phí thuộc về tác giả gốc, chúng tôi chỉ mô tả và dẫn link.</p>
+      <p style="margin:0 0 6px"><a class="brand" href="/" style="font-size:1.3rem">skills<span>.vn</span></a></p>
+      <p style="margin:0 0 8px">Thư viện Claude Skill và prompt tiếng Việt cho 24 ngành nghề.{site.company && <> Vận hành bởi {site.company}.</>}</p>
+      {site.email && <p style="margin:0"><a href={`mailto:${site.email}`}>{site.email}</a>{site.hotline && <> · Hotline {site.hotline}</>}</p>}
+      <p style="margin:12px 0 0">© {year} skills.vn</p>
     </div>
-    <nav aria-label="Nhóm skill" style="max-width:520px">
-      {categories.map((c) => <a href={`/thu-vien/${c.id}`}>{c.name}</a>)}
-    </nav>
-    <nav aria-label="Chân trang">
-      <a href="/thu-vien">Thư viện</a>
-      <a href="/pro">Gói Pro</a>
-      <a href="/dich-vu">Dịch vụ</a>
-      <a href="/huong-dan">Cách cài</a>
-      <a href="/dieu-khoan">Điều khoản</a>
-    </nav>
+    <div>
+      <h2>Skill theo ngành</h2>
+      <nav aria-label="Ngành nghề">
+        {categories.map((c) => <a href={`/nganh/${c.slug}`}>{c.name}</a>)}
+      </nav>
+    </div>
+    <div>
+      <h2>skills.vn</h2>
+      <nav aria-label="Chân trang" style="flex-direction:column">
+        <a href="/thu-vien">Thư viện skill</a>
+        <a href="/bots">Bots & Teams</a>
+        <a href="/sach">Sách prompting</a>
+        <a href="/huong-dan">Cách cài skill</a>
+        <a href="/pro">Gói Pro</a>
+        <a href="/dich-vu">Dịch vụ cài đặt</a>
+        <a href="/#gop-skill">Góp skill</a>
+        <a href="/dieu-khoan">Điều khoản</a>
+      </nav>
+    </div>
   </div>
 </footer>

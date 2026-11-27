@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "team-content-marketing",
+    "name": "Team Content Marketing",
+    "emoji": "✍️",
+    "desc": "Từ ý tưởng đến lịch đăng 30 ngày: viết bài, SEO, email và đo hiệu quả.",
+    "category": "Marketing & Bán hàng",
+    "categorySlug": "marketing-ban-hang",
+    "members": [
+      "viet-content",
+      "review-code",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "team-khoi-nghiep",
+    "name": "Team Khởi Nghiệp",
+    "emoji": "🚀",
+    "desc": "Từ ý tưởng đến pitch: PRD, mô hình kinh doanh, slide gọi vốn và research đối thủ.",
+    "category": "Kinh doanh & Khởi nghiệp",
+    "categorySlug": "kinh-doanh-khoi-nghiep",
+    "members": [
+      "viet-content",
+      "ke-toan",
+      "hr"
+    ]
+  },
+  {
+    "slug": "team-e-commerce",
+    "name": "Team E-commerce",
+    "emoji": "🛒",
+    "desc": "Từ sản phẩm đến đơn hàng: tối ưu gian hàng, flash sale, logistics và CSKH.",
+    "category": "Thương mại điện tử",
+    "categorySlug": "thuong-mai-dien-tu",
+    "members": [
+      "shopee",
+      "logistics",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "team-fnb",
+    "name": "Team F&B",
+    "emoji": "🍽️",
+    "desc": "Từ món ăn đến quán đông khách: menu, costing, phục vụ và content món ăn.",
+    "category": "F&B - Nhà hàng - Cafe",
+    "categorySlug": "fnb-nha-hang-cafe",
+    "members": [
+      "menu-fnb",
+      "viet-content",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "team-bds",
+    "name": "Team BĐS",
+    "emoji": "🏠",
+    "desc": "Từ tin đăng đến chốt deal: đăng tin, định giá, dẫn khách và hợp đồng.",
+    "category": "Bất động sản",
+    "categorySlug": "bat-dong-san",
+    "members": [
+      "tu-van-bds",
+      "soan-hop-dong",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "team-giao-duc",
+    "name": "Team Giáo Dục",
+    "emoji": "📚",
+    "desc": "Từ bài học đến lớp học hiệu quả: giáo án, quiz, gia sư và phản hồi học sinh.",
+    "category": "Giáo dục - Đào tạo",
+    "categorySlug": "giao-duc-dao-tao",
+    "members": [
+      "giao-an",
+      "viet-content",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "team-tai-chinh",
+    "name": "Team Tài Chính",
+    "emoji": "💰",
+    "desc": "Từ số liệu đến quyết định: kế toán thuế, P&L, dòng tiền và kế hoạch tiết kiệm.",
+    "category": "Tài chính - Kế toán",
+    "categorySlug": "tai-chinh-ke-toan",
+    "members": [
+      "ke-toan",
+      "bao-hiem",
+      "hr"
+    ]
+  },
+  {
+    "slug": "team-dev",
+    "name": "Team Dev",
+    "emoji": "🧑‍💻",
+    "desc": "Từ yêu cầu đến sản phẩm chạy được: PRD, review code, test và bot hỗ trợ.",
+    "category": "Lập trình",
+    "categorySlug": "lap-trinh",
+    "members": [
+      "review-code",
+      "viet-content",
+      "cong-van"
+    ]
+  }
+]

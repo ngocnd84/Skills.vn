@@ -1,6 +1,6 @@
 # skills.vn
 
-Thư viện skill AI và workflow n8n cho người Việt: mô tả tiếng Việt, lệnh cài sẵn, quét an toàn hằng tuần. Có gói Pro bán bằng chuyển khoản (SePay tự xác nhận) và form đặt dịch vụ cài đặt.
+Thư viện 120 Claude Skill và prompt tiếng Việt cho 24 ngành nghề, 18 mẫu bot, 8 bot team và sách prompting 6 chương. Mỗi skill có trang riêng (tải SKILL.md, chép prompt). Có gói Pro bán bằng chuyển khoản (SePay tự xác nhận) và form đặt dịch vụ cài đặt.
 
 - **Giao diện:** Astro, xuất ra trang tĩnh (nhanh, SEO tốt, không cần server).
 - **Phần động:** Cloudflare Worker (`worker/index.js` chuyển `/api/*` tới các hàm trong thư mục `functions/`) (tạo đơn, nhận webhook SePay, nhận form liên hệ).
@@ -75,7 +75,7 @@ Sau khi thêm biến hoặc binding, vào **Deployments** → **Retry deployment
 - Mỗi trang có tiêu đề, mô tả, canonical riêng; tiêu đề chọn theo từ khoá có lượt tìm thật tại Việt Nam (11/2026): "claude skill" ~3.600/tháng, "agent skills" ~2.900, "n8n workflow" ~1.000, "claude code skill" ~880, "skill claude" ~720 và đang tăng.
 - 9 trang nhóm tĩnh (`/thu-vien/tieng-viet`, `/thu-vien/tu-dong-hoa`…) để lên top các cụm "skill tiếng Việt", "workflow n8n mẫu".
 - Dữ liệu cấu trúc JSON-LD: Organization, BreadcrumbList, ItemList, SoftwareSourceCode, Product + Offer (giá VND), FAQPage, Service.
-- Sitemap có lastmod theo ngày quét, robots.txt, ảnh chia sẻ Facebook/Zalo 1200×630 (`public/og.png`).
+- Sitemap có lastmod theo ngày build, robots.txt, ảnh chia sẻ Facebook/Zalo 1200×630 (`public/og.png`).
 - `/llms.txt` tóm tắt toàn bộ site cho công cụ AI đọc.
 - Bản xem trước `*.workers.dev` gắn `noindex` để không trùng nội dung với skills.vn.
 - Font tự host (không gọi Google Fonts), trang tĩnh, CSS gọn: tốc độ tải tốt cho Core Web Vitals.
@@ -86,13 +86,11 @@ Sau khi thêm biến hoặc binding, vào **Deployments** → **Retry deployment
 
 ## Việc hằng ngày
 
-**Thêm hoặc sửa skill trong thư viện:** sửa `src/data/library.json` (mỗi mục một khối). Trường `skillMd` là đường dẫn file SKILL.md trong repo để máy quét đọc.
+**Thêm hoặc sửa skill trong thư viện:** sửa trực tiếp `src/data/skills.json` (mỗi skill một khối: `slug`, `name`, `category`, `categorySlug`, `description`, `skillMd`, `prompt`...). Ngành ở `src/data/categories.json`, bot ở `bots.json`, team ở `teams.json`, sách ở `books.json`. Đẩy lên GitHub là Cloudflare tự build lại.
 
 **Đổi giá, thêm bộ Pro:** sửa `src/data/products.json`. Đổi `status` từ `sap-ra` sang `dang-ban` là bộ đó mở bán.
 
 **Thông tin công ty ở chân trang:** điền `taxCode`, `address`, `email`, `hotline`, `zalo` trong `src/data/site.json`.
-
-**Quét an toàn:** GitHub Action chạy 8:17 sáng thứ Hai, tự cập nhật `src/data/scan.json` và Cloudflare tự build lại. Chạy tay: `npm run scan`.
 
 **Khi có đơn đã thanh toán:** Telegram báo "ĐÃ THANH TOÁN" kèm tên, SĐT, email → gửi file skill cho khách. Xem toàn bộ đơn trong D1 Console:
 ```sql
@@ -112,10 +110,10 @@ npm run preview   # = npm run build && wrangler dev, chạy cả trang tĩnh và
 ## Cấu trúc
 
 ```
-src/data/        library.json (thư viện), products.json (giá), scan.json (kết quả quét), site.json
+src/data/        skills.json, categories.json, bots.json, teams.json, books.json, quiz.json (nội dung), products.json (giá), site.json
 src/pages/       trang chủ, thư viện, chi tiết skill, Pro, dịch vụ, thanh toán, hướng dẫn, điều khoản
 functions/api/   orders (tạo/xem đơn), sepay (webhook), leads (form liên hệ)
 lib/server.js    mã dùng chung cho functions
-scripts/         scan-skills.mjs (quét an toàn)
+scripts/         build-data.mjs + app-source.json: tạo lại src/data từ bản thiết kế gốc (App.tsx). Chỉ chạy khi muốn ghi đè toàn bộ dữ liệu.
 schema.sql       bảng D1
 ```

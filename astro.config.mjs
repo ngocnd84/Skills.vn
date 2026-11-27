@@ -1,9 +1,15 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
-import { readFileSync } from 'node:fs';
 
-const scan = JSON.parse(readFileSync(new URL('./src/data/scan.json', import.meta.url), 'utf8'));
-const lastmod = new Date(scan.generatedAt + 'T00:00:00+07:00').toISOString();
+const lastmod = new Date().toISOString();
+
+const priority = (path) => {
+  if (path === '/') return 1.0;
+  if (path === '/thu-vien') return 0.9;
+  if (path === '/pro' || path === '/nganh' || path.startsWith('/nganh/')) return 0.8;
+  if (path.startsWith('/skill/')) return 0.7;
+  return 0.6;
+};
 
 export default defineConfig({
   site: 'https://skills.vn',
@@ -15,8 +21,8 @@ export default defineConfig({
       serialize(item) {
         const path = new URL(item.url).pathname;
         item.lastmod = lastmod;
-        item.changefreq = path === '/' || path.startsWith('/thu-vien') ? 'weekly' : 'monthly';
-        item.priority = path === '/' ? 1.0 : path.startsWith('/thu-vien') || path === '/pro' ? 0.9 : path.startsWith('/skill/') ? 0.7 : 0.6;
+        item.changefreq = path === '/' || path === '/thu-vien' || path.startsWith('/nganh') ? 'weekly' : 'monthly';
+        item.priority = priority(path);
         return item;
       },
     }),

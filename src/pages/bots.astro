@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import BotCard from '../components/BotCard.astro';
+import { bots, teams, botBySlug, counts, breadcrumb, itemListLd } from '../lib/site.js';
+---
+<Base
+  title={`${counts.bots} mẫu bot AI và ${counts.teams} bot team`}
+  description="Mẫu bot AI ghép từ Claude Skill: bot viết content, review code, kế toán, tư vấn BĐS, Shopee, hợp đồng. Ghép bot thành team để chạy trọn quy trình."
+  jsonLd={[breadcrumb([['Trang chủ', '/'], ['Bots & Teams', '/bots']]), itemListLd(bots.map((b) => ({ ...b, slug: `#${b.slug}` })), 'Mẫu bot AI', '/bots')]}
+>
+  <section class="wrap" style="padding-top:36px">
+    <h1 style="font-size:clamp(1.9rem,4.5vw,3rem)">Mẫu bot & bot team</h1>
+    <p class="lead">Một skill làm tốt một việc. Một bot gom vài skill cho một nghiệp vụ trọn vẹn, và một team nối nhiều bot thành quy trình. Đây là các mẫu để bạn dựng trên Claude, Telegram hoặc Zalo.</p>
+  </section>
+
+  <section class="wrap section" style="padding-top:20px">
+    <h2>Bot teams</h2>
+    <ul class="grid">
+      {teams.map((t) => (
+        <li class="card" id={t.slug}>
+          <div class="card-head"><span class="emoji" aria-hidden="true">{t.emoji}</span><div><h3>{t.name}</h3><p class="card-sub">{t.categorySlug ? <a href={`/nganh/${t.categorySlug}`}>{t.category}</a> : t.category}</p></div></div>
+          <p style="margin:0;color:var(--muted);font-size:0.93rem">{t.desc}</p>
+          <ul class="flow">{t.members.map((m) => <li><a href={`#${m}`} style="color:inherit;text-decoration:none">{botBySlug[m]?.name.replace(/^Bot /, '')}</a></li>)}</ul>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <h2>{counts.bots} mẫu bot</h2>
+      <ul class="grid">{bots.map((b) => <BotCard bot={b} />)}</ul>
+    </div>
+  </section>
+
+  <section class="wrap section">
+    <div class="band">
+      <h2>Cần dựng bot thật cho đội của bạn?</h2>
+      <p class="muted">Chúng tôi dựng bot trên Telegram, Zalo hoặc Claude, nối với dữ liệu của bạn và bàn giao kèm hướng dẫn.</p>
+      <a class="btn btn-primary" href="/dich-vu?can=viet-rieng">Đặt lịch tư vấn</a>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,32 @@
+[
+  {
+    "q": "Bạn muốn AI vẽ một chú mèo đang uống trà. Prompt nào tốt nhất?",
+    "opts": [
+      "Vẽ mèo.",
+      "Hãy vẽ một chú mèo màu cam đang uống trà trong quán cafe nhỏ, phong cách hoạt hình, ánh sáng ấm.",
+      "Mèo đẹp."
+    ],
+    "answer": 1,
+    "why": "Prompt tốt có chủ thể, hành động, bối cảnh và phong cách cụ thể."
+  },
+  {
+    "q": "AI trả lời chưa đúng ý bạn. Bạn nên làm gì?",
+    "opts": [
+      "Bỏ cuộc.",
+      "Nói rõ hơn: thêm ví dụ, đối tượng và định dạng bạn muốn.",
+      "Gõ lại đúng câu cũ."
+    ],
+    "answer": 1,
+    "why": "Nói rõ hơn và cho ví dụ giúp AI hiểu đúng ý bạn."
+  },
+  {
+    "q": "Trước khi nhờ AI làm bài tập, bạn nên làm gì?",
+    "opts": [
+      "Đưa hết bài cho AI làm.",
+      "Tự thử trước, rồi hỏi AI giải thích từng bước.",
+      "Không hỏi AI."
+    ],
+    "answer": 1,
+    "why": "Tự thử trước rồi hỏi cách giải giúp bạn hiểu bài thật sự."
+  }
+]

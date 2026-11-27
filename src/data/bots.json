@@ -1,0 +1,254 @@
+[
+  {
+    "slug": "viet-content",
+    "name": "Bot Viết Content",
+    "emoji": "✍️",
+    "desc": "Nhận chủ đề → trả outline, caption và CTA. Dùng skill Viết bài bán hàng + Content 30 ngày.",
+    "category": "Viết nội dung",
+    "categorySlug": "viet-noi-dung",
+    "cmd": "/content",
+    "platform": "Cả hai",
+    "together": [
+      "review-code",
+      "tu-van-bds"
+    ]
+  },
+  {
+    "slug": "review-code",
+    "name": "Bot Review Code",
+    "emoji": "🧑‍💻",
+    "desc": "Dán code → nhận lỗi, mức độ nghiêm trọng và code đã sửa. Dùng skill Code Reviewer.",
+    "category": "Lập trình",
+    "categorySlug": "lap-trinh",
+    "cmd": "/review",
+    "platform": "Máy của bạn",
+    "together": [
+      "viet-content",
+      "ke-toan"
+    ]
+  },
+  {
+    "slug": "ke-toan",
+    "name": "Bot Kế Toán",
+    "emoji": "🧾",
+    "desc": "Nhập số liệu → nhận P&L, thuế, unit economics và 3 hành động tiếp theo.",
+    "category": "Tài chính - Kế toán",
+    "categorySlug": "tai-chinh-ke-toan",
+    "cmd": "/finance",
+    "platform": "Cloud",
+    "together": [
+      "review-code",
+      "tu-van-bds"
+    ]
+  },
+  {
+    "slug": "tu-van-bds",
+    "name": "Bot Tư Vấn BĐS",
+    "emoji": "🏠",
+    "desc": "Nhập nhu cầu → nhận tin đăng, định giá và kịch bản dẫn khách xem nhà.",
+    "category": "Bất động sản",
+    "categorySlug": "bat-dong-san",
+    "cmd": "/bds",
+    "platform": "Cả hai",
+    "together": [
+      "viet-content",
+      "tour-guide"
+    ]
+  },
+  {
+    "slug": "tour-guide",
+    "name": "Bot Tour Guide",
+    "emoji": "🗺️",
+    "desc": "Nhập điểm đến → nhận lịch trình 3N2Đ, chi phí, ăn ở và lưu ý di chuyển.",
+    "category": "Du lịch - Khách sạn",
+    "categorySlug": "du-lich-khach-san",
+    "cmd": "/tour",
+    "platform": "Cloud",
+    "together": [
+      "tu-van-bds",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "cham-soc-kh",
+    "name": "Bot Chăm Sóc KH",
+    "emoji": "💬",
+    "desc": "Nhận tình huống KH → trả kịch bản trả lời, FAQ và quy trình escalate lịch sự.",
+    "category": "Vận hành",
+    "categorySlug": "",
+    "cmd": "/cskh",
+    "platform": "Cả hai",
+    "together": [
+      "tour-guide",
+      "viet-content"
+    ]
+  },
+  {
+    "slug": "soan-hop-dong",
+    "name": "Bot Soạn Hợp Đồng",
+    "emoji": "⚖️",
+    "desc": "Nhập loại hợp đồng → nhận bản nháp đầy đủ điều khoản, cọc và chấm dứt.",
+    "category": "Pháp lý - Luật",
+    "categorySlug": "phap-ly-luat",
+    "cmd": "/hopdong",
+    "platform": "Máy của bạn",
+    "together": [
+      "ke-toan",
+      "hr"
+    ]
+  },
+  {
+    "slug": "hr",
+    "name": "Bot HR",
+    "emoji": "👥",
+    "desc": "Nhập vị trí → nhận JD, câu hỏi phỏng vấn và thang lương tham khảo.",
+    "category": "Nhân sự - Tuyển dụng",
+    "categorySlug": "nhan-su-tuyen-dung",
+    "cmd": "/hr",
+    "platform": "Cloud",
+    "together": [
+      "soan-hop-dong",
+      "ke-toan"
+    ]
+  },
+  {
+    "slug": "menu-fnb",
+    "name": "Bot Menu F&B",
+    "emoji": "🍽️",
+    "desc": "Nhập món → nhận mô tả món, costing, giá bán và gợi ý upsell.",
+    "category": "F&B - Nhà hàng - Cafe",
+    "categorySlug": "fnb-nha-hang-cafe",
+    "cmd": "/menu",
+    "platform": "Cả hai",
+    "together": [
+      "cham-soc-kh",
+      "viet-content"
+    ]
+  },
+  {
+    "slug": "shopee",
+    "name": "Bot Shopee",
+    "emoji": "🛒",
+    "desc": "Nhập sản phẩm → nhận tiêu đề chuẩn SEO, mô tả, hashtag và chiến lược flash sale.",
+    "category": "Thương mại điện tử",
+    "categorySlug": "thuong-mai-dien-tu",
+    "cmd": "/shopee",
+    "platform": "Cloud",
+    "together": [
+      "viet-content",
+      "menu-fnb"
+    ]
+  },
+  {
+    "slug": "giao-an",
+    "name": "Bot Giáo Án",
+    "emoji": "📚",
+    "desc": "Nhập bài học → nhận giáo án STEM, quiz và bài tập theo độ khó.",
+    "category": "Giáo dục - Đào tạo",
+    "categorySlug": "giao-duc-dao-tao",
+    "cmd": "/giaoan",
+    "platform": "Cloud",
+    "together": [
+      "viet-content",
+      "hr"
+    ]
+  },
+  {
+    "slug": "suc-khoe-gia-dinh",
+    "name": "Bot Sức Khỏe Gia Đình",
+    "emoji": "🩺",
+    "desc": "Nhập triệu chứng → nhận câu hỏi phân loại, hướng dẫn và khi cần đi khám.",
+    "category": "Y tế - Dược",
+    "categorySlug": "y-te-duoc",
+    "cmd": "/suckhoe",
+    "platform": "Máy của bạn",
+    "together": [
+      "giao-an",
+      "cham-soc-kh"
+    ]
+  },
+  {
+    "slug": "logistics",
+    "name": "Bot Logistics",
+    "emoji": "🚚",
+    "desc": "Nhập điểm giao → nhận cước, tuyến tối ưu và tin nhắn xác nhận chuyến.",
+    "category": "Logistics - Vận tải",
+    "categorySlug": "logistics-van-tai",
+    "cmd": "/ship",
+    "platform": "Cả hai",
+    "together": [
+      "shopee",
+      "ke-toan"
+    ]
+  },
+  {
+    "slug": "xay-nha",
+    "name": "Bot Xây Nhà",
+    "emoji": "🏗️",
+    "desc": "Nhập diện tích → nhận dự toán, vật liệu và checklist tiến độ thi công.",
+    "category": "Xây dựng - Nội thất",
+    "categorySlug": "xay-dung-noi-that",
+    "cmd": "/xaynha",
+    "platform": "Cloud",
+    "together": [
+      "logistics",
+      "ke-toan"
+    ]
+  },
+  {
+    "slug": "dinh-gia-xe",
+    "name": "Bot Định Giá Xe",
+    "emoji": "🚗",
+    "desc": "Nhập đời xe, km → nhận khoảng giá, checklist kiểm tra và câu hỏi cho người bán.",
+    "category": "Ô tô - Xe máy",
+    "categorySlug": "o-to-xe-may",
+    "cmd": "/xe",
+    "platform": "Cả hai",
+    "together": [
+      "tu-van-bds",
+      "bao-hiem"
+    ]
+  },
+  {
+    "slug": "bao-hiem",
+    "name": "Bot Bảo Hiểm",
+    "emoji": "🏦",
+    "desc": "Nhập nhu cầu → nhận so sánh gói bảo hiểm, quyền lợi và điều khoản loại trừ.",
+    "category": "Bảo hiểm - Ngân hàng",
+    "categorySlug": "bao-hiem-ngan-hang",
+    "cmd": "/baohiem",
+    "platform": "Cloud",
+    "together": [
+      "dinh-gia-xe",
+      "ke-toan"
+    ]
+  },
+  {
+    "slug": "game",
+    "name": "Bot Game",
+    "emoji": "🎮",
+    "desc": "Nhập ý tưởng → nhận kịch bản game, nhân vật, nhiệm vụ và cân bằng gameplay.",
+    "category": "Game - Giải trí",
+    "categorySlug": "game-giai-tri",
+    "cmd": "/game",
+    "platform": "Máy của bạn",
+    "together": [
+      "viet-content",
+      "giao-an"
+    ]
+  },
+  {
+    "slug": "cong-van",
+    "name": "Bot Công Văn",
+    "emoji": "📄",
+    "desc": "Nhập nội dung → nhận công văn, tờ trình và báo cáo đúng thể thức hành chính.",
+    "category": "Hành chính - Công vụ",
+    "categorySlug": "hanh-chinh-cong-vu",
+    "cmd": "/congvan",
+    "platform": "Máy của bạn",
+    "together": [
+      "hr",
+      "soan-hop-dong"
+    ]
+  }
+]

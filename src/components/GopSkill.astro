@@ -1,0 +1,49 @@
+---
+import { categories } from '../lib/site.js';
+---
+<form class="form form-card" id="gop-form" novalidate>
+  <h3 style="font-size:1.25rem;margin:0">Góp một skill cho cộng đồng</h3>
+  <p class="muted" style="margin:0;font-size:0.93rem">Gửi skill bạn đang dùng tốt. Chúng tôi đọc, thử và đăng lên thư viện kèm tên bạn nếu bạn đồng ý.</p>
+  <label>Tên skill<input name="skill" required maxlength="100" placeholder="Ví dụ: Viết báo giá thi công nội thất" /></label>
+  <label>Ngành
+    <select name="category">{categories.map((c) => <option>{c.name}</option>)}</select>
+  </label>
+  <label>Skill làm gì<textarea name="desc" rows="3" maxlength="600" required placeholder="Một hai câu: dùng khi nào, cho ra kết quả gì"></textarea></label>
+  <label>Nội dung SKILL.md hoặc prompt <span class="hint">(không bắt buộc)</span><textarea name="content" rows="5" maxlength="6000"></textarea></label>
+  <label>Tên của bạn<input name="name" required maxlength="80" autocomplete="name" /></label>
+  <label>Email<input name="email" type="email" required maxlength="120" autocomplete="email" /></label>
+  <p class="form-msg" id="gop-msg" role="status"></p>
+  <button class="btn btn-primary" type="submit">Gửi skill</button>
+</form>
+<script>
+  const form = document.getElementById('gop-form');
+  const msg = document.getElementById('gop-msg');
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const d = Object.fromEntries(new FormData(form));
+    if (!d.skill.trim() || !d.desc.trim() || !d.name.trim() || !/^\S+@\S+\.\S+$/.test(d.email)) {
+      msg.textContent = 'Cần tên skill, mô tả, tên và email của bạn.';
+      msg.className = 'form-msg error';
+      return;
+    }
+    const btn = form.querySelector('button[type=submit]');
+    btn.disabled = true;
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ type: 'gop-skill', name: d.name, email: d.email, company: d.category, need: `${d.skill}\n\n${d.desc}\n\n${d.content}` }),
+      });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(out.error || 'Chưa gửi được. Thử lại sau ít phút.');
+      msg.textContent = 'Đã nhận skill của bạn. Chúng tôi sẽ email khi đăng lên thư viện.';
+      msg.className = 'form-msg ok';
+      form.reset();
+    } catch (err) {
+      msg.textContent = err.message;
+      msg.className = 'form-msg error';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>
