@@ -190,5 +190,13 @@
     "title": "Skill AI phân tích dữ liệu, Excel",
     "intro": "Phân tích Excel, dashboard báo cáo, làm sạch dữ liệu, phân tích hành vi khách hàng và dự báo doanh số.",
     "note": ""
+  },
+  {
+    "name": "Đời sống & Cá nhân",
+    "slug": "doi-song-ca-nhan",
+    "emoji": "🌱",
+    "title": "Skill AI cho đời sống và phát triển cá nhân",
+    "intro": "Huấn luyện mục tiêu cá nhân, quản lý thói quen, quan hệ, thể lực, DIY và kỹ năng nói trước đám đông: các prompt giúp bạn tự làm chủ kế hoạch sống hằng ngày.",
+    "note": ""
   }
 ]
